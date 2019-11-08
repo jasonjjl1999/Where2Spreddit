@@ -20,12 +20,17 @@ top10 = subreddit.top(limit=100)  # Get the top 100 posts from the sub
 dataset = []
 
 for submission in top10:
+
+    # Print out details about the submission
     print('--------------------------', submission.title, '--------------------------')
     print(submission.selftext, '\n')
     print('     Upvotes:', submission.score, '\n')
-    dataset.append((filter(submission.title), filter(submission.selftext), submission.score, submission.subreddit))
 
-dataset = pd.DataFrame(dataset, columns = ['title', 'text', 'upvotes', 'label'])
+    # Add the submission to a Pandas DataFrame object
+    if submission.selftext != '':  # Filters out non text posts
+        dataset.append((filter(submission.title), filter(submission.selftext), submission.score, submission.subreddit))
+
+dataset = pd.DataFrame(dataset, columns=['title', 'text', 'upvotes', 'label'])
 
 print('The pandas DataFrame of the data: ')
 print(dataset)
