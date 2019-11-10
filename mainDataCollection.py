@@ -5,12 +5,11 @@ reddit = praw.Reddit(client_id='0bfjHES78X7Fyg',
                      user_agent='SubredditPredictor')
 
 print('Obtained posts from:')
-
-print(topToCSV('jokes', 100, reddit))
-print(topToCSV('askreddit', 100, reddit))
+print(topToCSV('jokes', 1000, reddit))
+print(topToCSV('askreddit', 1000, reddit))
+print(topToCSV('legaladvice', 1000, reddit))
 
 # Read all .csv files in './dataset' directory
-
 dataset = []
 for filename in os.listdir('./dataset'):
     if filename.endswith('.csv'):
