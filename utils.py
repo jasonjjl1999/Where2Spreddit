@@ -20,7 +20,6 @@ def topToCSV(subreddit_name, n, reddit):
             )
 
     dataframe = pd.DataFrame(dataset, columns=['title', 'text', 'upvotes', 'label'])  # Convert list to DataFrame
-
     dataframe.to_csv(path_or_buf='top_'+str(n)+'_posts_from_'+subreddit_name+'.csv', index=False)
 
     return dataframe
