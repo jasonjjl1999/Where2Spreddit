@@ -4,9 +4,10 @@ reddit = praw.Reddit(client_id='0bfjHES78X7Fyg',
                      client_secret='yyM87GD70mIP3qRToGuX1F59Sd4',
                      user_agent='SubredditPredictor')
 
-n = 100
+n = 500  # Number of top posts to load from each subreddit
 
-print('Obtained posts from:')
+print('Obtained posts from:\n')
+
 print(top_to_csv('jokes', n, reddit))
 print(top_to_csv('askreddit', n, reddit))
 print(top_to_csv('legaladvice', n, reddit))
@@ -27,6 +28,13 @@ for filename in os.listdir('./dataset'):
         dataset.append(pd.read_csv('./dataset/'+filename))
 
 df = pd.concat(dataset, ignore_index=True)  # Concatenate all subreddit data into one dataframe
-df.to_csv(path_or_buf='./dataset/df.csv', index=False)
+
+directory = './dataset/training'
+if os.path.exists(directory) == False:  # Create 'dataset/training' directory if it does not already exist
+    os.mkdir(directory)
+
+df.to_csv(path_or_buf=directory+'/df.csv', index=False)
 
 print(df)
+
+data_split(df)
