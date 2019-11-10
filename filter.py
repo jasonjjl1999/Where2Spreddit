@@ -28,4 +28,10 @@ def filter(post):
     post = post.replace('[', '')
     post = post.replace(']', '')
 
+    # Remove accents
+    post = post.replace('é', 'e')
+
+    # Lowercase
+    post = post.lower()
+
     return post
