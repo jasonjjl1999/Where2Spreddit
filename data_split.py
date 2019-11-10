@@ -1,13 +1,7 @@
-"""
-    3.1 Create train/validation/test splits
-
-    This script will split the data/data.tsv into train/validation/test.tsv files.
-"""
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
 data = pd.read_csv('./data/data.tsv', sep='\t')
-# next line becomes uncommented based on what type of input the network is expecting (float/long)
 # data['label'] = data['label'].astype(float)
 data_sub = data.loc[data['label'] == 1]
 data_obj = data.loc[data['label'] == 0]

@@ -4,11 +4,9 @@ import matplotlib.pyplot as plt
 import torchtext
 from torchtext import data
 import spacy
-
 import argparse
 import os
-
-from models_a5 import *
+from models import *
 
 
 def eval_acc(model, data, loss_fcn, model_type, type_of_eval):
@@ -34,40 +32,25 @@ def eval_acc(model, data, loss_fcn, model_type, type_of_eval):
 
 
 def main(args):
-    ######
-    # 3.2 Processing of the data
-    # the code below assumes you have processed and split the data into
-    # the three files, train.tsv, validation.tsv and test.tsv
-    # and those files reside in the folder named "data".
-    ######
+    text = data.Field(sequential=True, lower=True, tokenize='spacy', include_lengths=True)
+    labels = data.Field(sequential=False, use_vocab=False)
 
-    # 3.2.1
-    TEXT = data.Field(sequential=True, lower=True, tokenize='spacy', include_lengths=True)
-    LABELS = data.Field(sequential=False, use_vocab=False)
-
-
-    # 3.2.2
     train_data, val_data, test_data = data.TabularDataset.splits(
             path='data/', train='train.tsv',
             validation='validation.tsv', test='test.tsv', format='tsv',
-            skip_header=True, fields=[('text', TEXT), ('label', LABELS)])
+            skip_header=True, fields=[('text', text), ('label', labels)])
 
-    # 3.2.3
     train_iter, val_iter, test_iter = data.BucketIterator.splits(
         (train_data, val_data, test_data), batch_sizes=(args.batch_size, args.batch_size, args.batch_size),
         sort_key=lambda x: len(x.text), device=None, sort_within_batch=True, repeat=False)
 
-    # 3.2.4
-    TEXT.build_vocab(train_data, val_data, test_data)
+    text.build_vocab(train_data, val_data, test_data)
 
-    # 4.1
-    TEXT.vocab.load_vectors(torchtext.vocab.GloVe(name='6B', dim=100))
-    vocab = TEXT.vocab
+    text.vocab.load_vectors(torchtext.vocab.GloVe(name='6B', dim=100))
+    vocab = text.vocab
 
-    print("Shape of Vocab:", TEXT.vocab.vectors.shape)
+    print("Shape of Vocab:", text.vocab.vectors.shape)
 
-    # My code starts here for Part 4.3
-    # Store arguments in variables
     batch_size = args.batch_size
     lr = args.lr
     epochs = args.epochs
@@ -76,27 +59,20 @@ def main(args):
     rnn_hidden_dim = args.rnn_hidden_dim
     num_filt = args.num_filt
     seed = 10
-    if model_type == 'baseline':
-        net = Baseline(emb_dim, vocab)
     if model_type == 'cnn':
         net = CNN(emb_dim, vocab, num_filt, [2, 4])
-    if model_type == 'rnn':
+    elif model_type == 'rnn' or model_type == 'gru':
         net = RNN(emb_dim, vocab, rnn_hidden_dim)
+    else:
+        net = Baseline(emb_dim, vocab)
 
     # Setup using Adam optimizer
     optimizer = optim.Adam(net.parameters(), lr=lr)
     loss_fcn = nn.BCEWithLogitsLoss()
 
-    # Plotting datas
+    # Plotting data
     plot_epoch = [i for i in range(1, args.epochs + 1)]
     plot_train_loss, plot_train_acc, plot_valid_loss, plot_valid_acc = [], [], [], []
-    t = []
-
-    ######
-
-    # 5 Training and Evaluation
-
-    ######
 
     # Begin Training Loop
     for epoch in range(epochs):
