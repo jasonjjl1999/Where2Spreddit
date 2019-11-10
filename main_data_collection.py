@@ -4,7 +4,7 @@ reddit = praw.Reddit(client_id='0bfjHES78X7Fyg',
                      client_secret='yyM87GD70mIP3qRToGuX1F59Sd4',
                      user_agent='SubredditPredictor')
 
-n = 500  # Number of top posts to load from each subreddit
+n = 1000  # Number of top posts to load from each subreddit
 
 print('Obtained posts from:\n')
 
