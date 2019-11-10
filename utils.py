@@ -3,6 +3,8 @@ import pandas as pd
 
 from filter import filter
 
+import os
+
 def topToCSV(subreddit_name, n, reddit):
 
     # Scrapes the top 'n' posts of 'subreddit' and stores the post title, text body, and number of upvotes
@@ -21,6 +23,9 @@ def topToCSV(subreddit_name, n, reddit):
 
     dataframe = pd.DataFrame(dataset, columns=['title', 'text', 'label'])  # Convert list to DataFrame
     filename = subreddit_name+'_top_'+str(n)+'.csv'  # Output .csv filename
-    dataframe.to_csv(path_or_buf=filename, index=False)
+    directory = './dataset'
+    if os.path.exists(directory) == False:  # Create 'dataset' folder if it does not already exist
+        os.mkdir(directory)
+    dataframe.to_csv(path_or_buf=directory+'/'+filename, index=False)
 
     return filename
