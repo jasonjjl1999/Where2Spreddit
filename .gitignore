@@ -125,9 +125,6 @@ dmypy.json
 # PyCharm 
 .idea/
 
-# General
-*.csv
-
 # Specific Files
 debug.py
 
