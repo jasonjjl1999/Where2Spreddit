@@ -1,0 +1,12 @@
+Subreddit names vs labels in .csv files: 
+ 
+jokes: 0
+askreddit: 1
+legaladvice: 2
+AmItheAsshole: 3
+tifu: 4
+todayilearned: 5
+unpopularopinion: 6
+NoStupidQuestions: 7
+relationship_advice: 8
+LifeProTips: 9

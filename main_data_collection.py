@@ -4,22 +4,27 @@ reddit = praw.Reddit(client_id='0bfjHES78X7Fyg',
                      client_secret='yyM87GD70mIP3qRToGuX1F59Sd4',
                      user_agent='SubredditPredictor')
 
-n = 1000  # Number of top posts to load from each subreddit
+
+
+subreddits = [
+    'jokes', 'askreddit', 'legaladvice', 'AmItheAsshole', 'tifu', 'todayilearned', 'unpopularopinion',
+    'NoStupidQuestions', 'relationship_advice', 'LifeProTips'
+]
+
+label_list = 'Subreddit names vs labels in .csv files: \n \n'
 
 print('Obtained posts from:\n')
 
-print(top_to_csv('jokes', n, reddit))
-print(top_to_csv('askreddit', n, reddit))
-print(top_to_csv('legaladvice', n, reddit))
-print(top_to_csv('AmItheAsshole', n, reddit))
-print(top_to_csv('tifu', n, reddit))
-print(top_to_csv('todayilearned', n, reddit))
-print(top_to_csv('unpopularopinion', n, reddit))
-print(top_to_csv('NoStupidQuestions', n, reddit))
-print(top_to_csv('relationship_advice', n, reddit))
-print(top_to_csv('LifeProTips', n, reddit))
+n = 300  # Number of top posts to load from each subreddit
 
+for label, subreddit in enumerate(subreddits):  # Create a .csv file for each subreddit
+    print(top_to_csv(subreddit, n, label, reddit))
+    label_list += subreddit+': '+str(label)+'\n'
 
+#  Store the label/subreddit correspondence in a text file.
+label_file = open('./dataset/labels.txt', 'w')
+label_file.write(label_list)
+label_file.close()
 
 # Read all .csv files in './dataset' directory
 dataset = []
