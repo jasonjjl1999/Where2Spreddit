@@ -5,5 +5,4 @@ reddit = praw.Reddit(client_id='0bfjHES78X7Fyg',
                      user_agent='SubredditPredictor')
 
 print(topToCSV('jokes', 100, reddit))
-
-x = pd.read_csv('jokes_top_100.csv')
+print(topToCSV('askreddit', 100, reddit))
