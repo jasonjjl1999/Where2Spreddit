@@ -8,7 +8,7 @@ def topToCSV(subreddit_name, n, reddit):
     # Scrapes the top 'n' posts of 'subreddit' and stores the post title, text body, and number of upvotes
     # into a .csv file.
     # topToCSV requires that the reddit instance is passed in as an argument.
-    # topToCSV returns the dataframe object.
+    # topToCSV returns the name of the output file.
 
     subreddit = reddit.subreddit(subreddit_name)
 
@@ -20,6 +20,7 @@ def topToCSV(subreddit_name, n, reddit):
             )
 
     dataframe = pd.DataFrame(dataset, columns=['title', 'text', 'label'])  # Convert list to DataFrame
-    dataframe.to_csv(path_or_buf=subreddit_name+'_top_'+str(n)+'.csv', index=False)
+    filename = subreddit_name+'_top_'+str(n)+'.csv'  # Output .csv filename
+    dataframe.to_csv(path_or_buf=filename, index=False)
 
-    return dataframe
+    return filename
