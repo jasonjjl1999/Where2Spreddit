@@ -3,11 +3,11 @@ import torch.nn as nn
 
 
 class Baseline(nn.Module):
-    def __init__(self, embedding_dim, vocab):
+    def __init__(self, embedding_dim, vocab, num_classes):
         super(Baseline, self).__init__()
 
         self.embedding = nn.Embedding.from_pretrained(vocab.vectors)
-        self.fc = nn.Linear(embedding_dim, 1)
+        self.fc = nn.Linear(embedding_dim, num_classes)
 
     def forward(self, x, lengths=None):
         embedded = self.embedding(x)
@@ -17,7 +17,7 @@ class Baseline(nn.Module):
 
 
 class CNN(nn.Module):
-    def __init__(self, embedding_dim, vocab, n_filters, filter_sizes):
+    def __init__(self, embedding_dim, vocab, n_filters, filter_sizes, num_classes):
         super(CNN, self).__init__()
 
         self.embed = nn.Embedding(len(vocab), embedding_dim)
@@ -31,7 +31,7 @@ class CNN(nn.Module):
             nn.ReLU()
         )
         self.linear = nn.Sequential(
-            nn.Linear(100, 1),
+            nn.Linear(100, num_classes),
             nn.Sigmoid()
         )
 
@@ -47,13 +47,13 @@ class CNN(nn.Module):
 
 
 class GRU(nn.Module):
-    def __init__(self, embedding_dim, vocab, hidden_dim):
+    def __init__(self, embedding_dim, vocab, hidden_dim, num_classes):
         super(GRU, self).__init__()
 
         self.embedding = nn.Embedding.from_pretrained(vocab.vectors)
         self.rnn = nn.GRU(embedding_dim, hidden_dim)
         self.linear = nn.Sequential(
-            nn.Linear(hidden_dim, 1),
+            nn.Linear(hidden_dim, num_classes),
             nn.Sigmoid()
         )
 
@@ -65,13 +65,13 @@ class GRU(nn.Module):
 
 
 class RNN(nn.Module):
-    def __init__(self, embedding_dim, vocab, hidden_dim):
+    def __init__(self, embedding_dim, vocab, hidden_dim, num_classes):
         super(RNN, self).__init__()
 
         self.embedding = nn.Embedding.from_pretrained(vocab.vectors)
         self.rnn = nn.RNN(embedding_dim, hidden_dim)
         self.linear = nn.Sequential(
-            nn.Linear(hidden_dim, 1),
+            nn.Linear(hidden_dim, num_classes),
             nn.Sigmoid()
         )
 

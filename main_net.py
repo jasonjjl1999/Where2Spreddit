@@ -9,6 +9,26 @@ import os
 from models import *
 
 
+def many_cold(one_hot):
+    """
+    Takes a list of one-hot vectors and turns them into numerical representations
+    """
+    one_hot_list = one_hot.tolist()
+    labels = []
+    for i in range(len(one_hot_list)):
+        labels.append(one_hot_list[i].index(max(one_hot_list[i])))
+    return torch.Tensor(labels)
+
+
+def one_hot(x, dim):
+    """
+    Turns a numerical label into a one-hot vector
+    """
+    vec = torch.zeros(dim)
+    vec[x] = 1.0
+    return vec
+
+
 def eval_acc(model, data, loss_fcn, model_type, type_of_eval):
     cum_corr, cum_total, cum_loss = 0, 0, 0
     for i, batch in enumerate(data, 0):
@@ -36,8 +56,8 @@ def main(args):
     labels = data.Field(sequential=False, use_vocab=False)
 
     train_data, val_data, test_data = data.TabularDataset.splits(
-            path='data/', train='train.tsv',
-            validation='validation.tsv', test='test.tsv', format='tsv',
+            path='data/', train='train.csv',
+            validation='validation.csv', test='test.csv', format='csv',
             skip_header=True, fields=[('text', text), ('label', labels)])
 
     train_iter, val_iter, test_iter = data.BucketIterator.splits(
@@ -53,6 +73,7 @@ def main(args):
 
     batch_size = args.batch_size
     lr = args.lr
+    num_classes = args.num_class
     epochs = args.epochs
     model_type = args.model
     emb_dim = args.emb_dim
@@ -60,11 +81,11 @@ def main(args):
     num_filt = args.num_filt
     seed = 10
     if model_type == 'cnn':
-        net = CNN(emb_dim, vocab, num_filt, [2, 4])
+        net = CNN(emb_dim, vocab, num_filt, [2, 4], num_classes)
     elif model_type == 'rnn' or model_type == 'gru':
-        net = RNN(emb_dim, vocab, rnn_hidden_dim)
+        net = RNN(emb_dim, vocab, rnn_hidden_dim, num_classes)
     else:
-        net = Baseline(emb_dim, vocab)
+        net = Baseline(emb_dim, vocab, num_classes)
 
     # Setup using Adam optimizer
     optimizer = optim.Adam(net.parameters(), lr=lr)
@@ -84,7 +105,7 @@ def main(args):
 
             # Getting data for current batch
             batch_input, batch_length = batch.text
-            batch_label = batch.label.float()
+            batch_label = nn.functional.one_hot(batch.label).float()
 
             # Forward step to get prediction
             if model_type == 'rnn':
@@ -93,7 +114,7 @@ def main(args):
                 output = net(batch_input)
 
             # Loss calculation and parameter update
-            loss = loss_fcn(output, batch_label)
+            loss = loss_fcn(output, many_cold(batch_label))
             cum_loss += loss
             loss.backward()
             optimizer.step()
@@ -152,6 +173,7 @@ if __name__ == '__main__':
     parser.add_argument('--emb-dim', type=int, default=100)
     parser.add_argument('--rnn-hidden-dim', type=int, default=100)
     parser.add_argument('--num-filt', type=int, default=50)
+    parser.add_argument('--num-class', type=int, default=1)
 
     args = parser.parse_args()
 
