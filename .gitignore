@@ -127,4 +127,7 @@ dmypy.json
 
 # General
 *.csv
+
+# Specific Files
 debug.py
+
