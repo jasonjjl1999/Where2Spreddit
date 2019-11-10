@@ -15,11 +15,11 @@ print(subreddit.title, '\n')
 # print(subreddit.description)
 
 
-top10 = subreddit.top(limit=100)  # Get the top 100 posts from the sub
+top = subreddit.top(limit=100)  # Get the top 100 posts from the sub
 
 dataset = []
 
-for submission in top10:
+for submission in top:
 
     # Print out details about the submission
     print('--------------------------', submission.title, '--------------------------')
