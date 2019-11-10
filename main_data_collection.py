@@ -17,7 +17,7 @@ n = 300  # Number of top posts to load from each subreddit
 
 for label, subreddit in enumerate(subreddits):  # Create a .csv file for each subreddit
     print(top_to_csv(subreddit, n, label, reddit))
-    label_list += subreddit+': '+str(label)+'\n'
+    label_list += 'r/'+subreddit+': '+str(label)+'\n'
 
 #  Store the label/subreddit correspondence in a text file.
 label_file = open('./dataset/labels.txt', 'w')
