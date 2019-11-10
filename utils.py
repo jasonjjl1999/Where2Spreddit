@@ -16,10 +16,10 @@ def topToCSV(subreddit_name, n, reddit):
     dataset = []
     for submission in top:  # Iterate through each submission to add to a list
             dataset.append(
-                (filter(submission.title), filter(submission.selftext), submission.score, submission.subreddit)
+                (filter(submission.title), filter(submission.selftext), submission.subreddit)
             )
 
-    dataframe = pd.DataFrame(dataset, columns=['title', 'text', 'upvotes', 'label'])  # Convert list to DataFrame
-    dataframe.to_csv(path_or_buf='top_'+str(n)+'_posts_from_'+subreddit_name+'.csv', index=False)
+    dataframe = pd.DataFrame(dataset, columns=['title', 'text', 'label'])  # Convert list to DataFrame
+    dataframe.to_csv(path_or_buf=subreddit_name+'_top_'+str(n)+'.csv', index=False)
 
     return dataframe
