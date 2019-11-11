@@ -199,3 +199,9 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     main(args)
+
+'''
+--model baseline --lr 0.01 --epochs 100
+--model cnn --lr 0.01 --epochs 100
+
+'''
