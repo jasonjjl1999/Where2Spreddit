@@ -7,6 +7,16 @@ import spacy
 import argparse
 import os
 from models import *
+import numpy as np
+from torchsummary import summary
+import random
+
+torch.manual_seed(0)
+torch.cuda.manual_seed(0)
+np.random.seed(0)
+torch.backends.cudnn.deterministic = True
+random.seed(0)
+
 
 
 def many_cold(one_hot):
@@ -39,16 +49,16 @@ def eval_acc(model, data, loss_fcn, model_type, type_of_eval):
         ind_batch, batch_length = batch.text
         label = batch.label.float()
 
-        if model_type == 'rnn':
+        if model_type == 'rnn' or model_type == 'gru':
             output = model(ind_batch, batch_length)
         else:
             output = model(ind_batch)
 
         # Add up totals
         cum_total += label.size(0)
-        cum_corr += int(((output > 0.5).squeeze().float() == label).sum())
-        cum_loss += loss_fcn(output, label)
-    return float(cum_loss), float(cum_corr/cum_total)
+        cum_corr += int((many_cold(output).squeeze().float() == label).sum())
+        cum_loss += loss_fcn(output, label.long())
+    return float(cum_loss), float(cum_corr / cum_total)
 
 
 def main(args):
@@ -56,9 +66,9 @@ def main(args):
     labels = data.Field(sequential=False, use_vocab=False)
 
     train_data, val_data, test_data = data.TabularDataset.splits(
-            path='./dataset/training', train='train.csv',
-            validation='validation.csv', test='test.csv', format='csv',
-            skip_header=True, fields=[('text', text), ('label', labels)])
+        path='./dataset/training', train='train.csv',
+        validation='validation.csv', test='test.csv', format='csv',
+        skip_header=True, fields=[('text', text), ('label', labels)])
 
     train_iter, val_iter, test_iter = data.BucketIterator.splits(
         (train_data, val_data, test_data), batch_sizes=(args.batch_size, args.batch_size, args.batch_size),
@@ -89,7 +99,7 @@ def main(args):
 
     # Setup using Adam optimizer
     optimizer = optim.Adam(net.parameters(), lr=lr)
-    loss_fcn = nn.BCEWithLogitsLoss()
+    loss_fcn = nn.CrossEntropyLoss()
 
     # Plotting data
     plot_epoch = [i for i in range(1, args.epochs + 1)]
@@ -108,13 +118,13 @@ def main(args):
             batch_label = nn.functional.one_hot(batch.label).float()
 
             # Forward step to get prediction
-            if model_type == 'rnn':
+            if model_type == 'rnn' or model_type == 'gru':
                 output = net(batch_input, batch_length)
             else:
                 output = net(batch_input)
 
             # Loss calculation and parameter update
-            loss = loss_fcn(output, many_cold(batch_label))
+            loss = loss_fcn(output, many_cold(batch_label).long())
             cum_loss += loss
             loss.backward()
             optimizer.step()
@@ -124,19 +134,19 @@ def main(args):
         train_loss, train_acc = eval_acc(net, train_iter, loss_fcn, model_type, 'train')
         valid_loss, valid_acc = eval_acc(net, val_iter, loss_fcn, model_type, 'val')
 
-        plot_train_loss.append(cum_loss/(epoch + 1))
+        plot_train_loss.append(cum_loss / (epoch + 1))
         plot_train_acc.append(train_acc)
-        plot_valid_loss.append(valid_loss/(epoch + 1))
+        plot_valid_loss.append(valid_loss / (epoch + 1))
         plot_valid_acc.append(valid_acc)
 
         # Print progress per batch to monitor progress
         print('[%d] Train Loss: %.3f  Valid Loss: %.3f Train Acc: %.3f Valid Acc: %3f ' % (epoch + 1,
-                                                                                           cum_loss/(epoch + 1),
-                                                                                           valid_loss/(epoch + 1),
+                                                                                           cum_loss / (epoch + 1),
+                                                                                           valid_loss / (epoch + 1),
                                                                                            train_acc, valid_acc))
     # Final Test Accuracy
     test_loss, test_acc = eval_acc(net, test_iter, loss_fcn, model_type, 'test')
-    print('Final Test Loss: ' + str(test_loss/(epoch + 1)) + ', Final Test Acc: ' + str(test_acc))
+    print('Final Test Loss: ' + str(test_loss / (epoch + 1)) + ', Final Test Acc: ' + str(test_acc))
 
     # Saving model
     # torch.save(net, 'model_rnn.pt')
@@ -162,18 +172,20 @@ def main(args):
     plt.legend()
     plt.show()
 
+    print(net)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--batch-size', type=int, default=64)
-    parser.add_argument('--lr', type=float, default=0.001)
+    parser.add_argument('--lr', type=float, default=0.01)
     parser.add_argument('--epochs', type=int, default=25)
     parser.add_argument('--model', type=str, default='baseline',
                         help="Model type: baseline,rnn,cnn (Default: baseline)")
     parser.add_argument('--emb-dim', type=int, default=100)
     parser.add_argument('--rnn-hidden-dim', type=int, default=100)
     parser.add_argument('--num-filt', type=int, default=50)
-    parser.add_argument('--num-class', type=int, default=1)
+    parser.add_argument('--num-class', type=int, default=10)
 
     args = parser.parse_args()
 
