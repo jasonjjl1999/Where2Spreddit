@@ -56,7 +56,7 @@ def main(args):
     labels = data.Field(sequential=False, use_vocab=False)
 
     train_data, val_data, test_data = data.TabularDataset.splits(
-            path='data/', train='train.csv',
+            path='./dataset/training', train='train.csv',
             validation='validation.csv', test='test.csv', format='csv',
             skip_header=True, fields=[('text', text), ('label', labels)])
 

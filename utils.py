@@ -10,10 +10,11 @@ from sklearn.utils import shuffle
 
 import numpy as np
 
-def top_to_csv(subreddit_name, n, reddit):
+def top_to_csv(subreddit_name, n, label, reddit):
 
     # Scrapes the top 'n' posts of 'subreddit' and stores the post title, text body, and number of upvotes
     # into a .csv file.
+    # The label is an input int that will be used to label posts from this subreddit
     # topToCSV requires that the reddit instance is passed in as an argument.
     # topToCSV returns the name of the output file.
 
@@ -23,10 +24,19 @@ def top_to_csv(subreddit_name, n, reddit):
     dataset = []
     for submission in top:  # Iterate through each submission to add to a list
             dataset.append(
-                (filter(submission.title), filter(submission.selftext), submission.subreddit)
+                (filter(submission.title)+' '+filter(submission.selftext), label)
             )
 
-    dataframe = pd.DataFrame(dataset, columns=['title', 'text', 'label'])  # Convert list to DataFrame
+    dataframe = pd.DataFrame(dataset, columns=['text', 'label'])  # Convert list to DataFrame
+
+    '''
+    # Same thing, but have titles and body text separate
+    for submission in top:  # Iterate through each submission to add to a list
+            dataset.append(
+                (filter(submission.title), filter(submission.selftext), submission.subreddit)
+            )
+    dataframe = pd.DataFrame(dataset, columns=['title', 'text', 'label'])  
+    '''
     filename = subreddit_name+'_top_'+str(n)+'.csv'  # Output .csv filename
     directory = './dataset'
     if os.path.exists(directory) == False:  # Create 'dataset' folder if it does not already exist
