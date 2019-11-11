@@ -33,11 +33,11 @@ class CNN(nn.Module):
 
         self.embed = nn.Embedding(len(vocab), embedding_dim)
         self.embed.from_pretrained(vocab.vectors)
-        self.con1 = nn.Sequential(
+        self.conv1 = nn.Sequential(
             nn.Conv2d(1, n_filters, (filter_sizes[0], embedding_dim)),
             nn.ReLU()
         )
-        self.con2 = nn.Sequential(
+        self.conv2 = nn.Sequential(
             nn.Conv2d(1, n_filters, (filter_sizes[1], embedding_dim)),
             nn.ReLU()
         )
