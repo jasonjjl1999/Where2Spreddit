@@ -49,7 +49,7 @@ def eval_acc(model, data, loss_fcn, model_type, type_of_eval):
         elif type_of_eval == 'test' and (i > 20.0 / 64.0 * int((len(data.dataset) / args.batch_size))):
             break
         ind_batch, batch_length = batch.text
-        ind_batch =ind_batch.to(device)
+        ind_batch = ind_batch.to(device)
         label = batch.label.float()
 
         if model_type == 'rnn' or model_type == 'gru':
@@ -100,7 +100,6 @@ def main(args):
         net = RNN(emb_dim, vocab, rnn_hidden_dim, num_classes)
     else:
         net = Baseline(emb_dim, vocab, num_classes)
-
 
     # Use CUDA model if available:
     net.to(device)
