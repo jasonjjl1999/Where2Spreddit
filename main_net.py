@@ -8,15 +8,17 @@ import argparse
 import os
 from models import *
 import numpy as np
-from torchsummary import summary
 import random
 
+# Set random seeds
 torch.manual_seed(0)
 torch.cuda.manual_seed(0)
 np.random.seed(0)
 torch.backends.cudnn.deterministic = True
 random.seed(0)
 
+# Set default device (for GPU usage)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  # torchsummary
 
 
 def many_cold(one_hot):
@@ -47,6 +49,7 @@ def eval_acc(model, data, loss_fcn, model_type, type_of_eval):
         elif type_of_eval == 'test' and (i > 20.0 / 64.0 * int((len(data.dataset) / args.batch_size))):
             break
         ind_batch, batch_length = batch.text
+        ind_batch =ind_batch.to(device)
         label = batch.label.float()
 
         if model_type == 'rnn' or model_type == 'gru':
@@ -57,7 +60,7 @@ def eval_acc(model, data, loss_fcn, model_type, type_of_eval):
         # Add up totals
         cum_total += label.size(0)
         cum_corr += int((many_cold(output).squeeze().float() == label).sum())
-        cum_loss += loss_fcn(output, label.long())
+        cum_loss += loss_fcn(output, label.long().to(device))
     return float(cum_loss), float(cum_corr / cum_total)
 
 
@@ -92,10 +95,15 @@ def main(args):
     seed = 10
     if model_type == 'cnn':
         net = CNN(emb_dim, vocab, num_filt, [2, 4], num_classes)
+
     elif model_type == 'rnn' or model_type == 'gru':
         net = RNN(emb_dim, vocab, rnn_hidden_dim, num_classes)
     else:
         net = Baseline(emb_dim, vocab, num_classes)
+
+
+    # Use CUDA model if available:
+    net.to(device)
 
     # Setup using Adam optimizer
     optimizer = optim.Adam(net.parameters(), lr=lr)
@@ -115,6 +123,7 @@ def main(args):
 
             # Getting data for current batch
             batch_input, batch_length = batch.text
+            batch_input = batch_input.to(device)
             batch_label = nn.functional.one_hot(batch.label).float()
 
             # Forward step to get prediction
@@ -124,7 +133,7 @@ def main(args):
                 output = net(batch_input)
 
             # Loss calculation and parameter update
-            loss = loss_fcn(output, many_cold(batch_label).long())
+            loss = loss_fcn(output, many_cold(batch_label).long().to(device))
             cum_loss += loss
             loss.backward()
             optimizer.step()
