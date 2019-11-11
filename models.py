@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 
 class Baseline(nn.Module):
@@ -7,12 +8,22 @@ class Baseline(nn.Module):
         super(Baseline, self).__init__()
 
         self.embedding = nn.Embedding.from_pretrained(vocab.vectors)
-        self.fc = nn.Linear(embedding_dim, num_classes)
+        self.fc1 = nn.Linear(embedding_dim, 64)
+        self.fc2 = nn.Linear(64, 32)
+        self.fc3 = nn.Sequential(
+            nn.Linear(32, num_classes),
+            nn.Sigmoid()
+        )
 
     def forward(self, x, lengths=None):
         embedded = self.embedding(x)
         average = embedded.mean(0)
-        output = self.fc(average).squeeze(1)
+        output = self.fc1(average).squeeze(1)
+        output = F.relu(output)
+        output = self.fc2(output)
+        output = F.relu(output)
+        output = self.fc3(output)
+
         return output
 
 
@@ -52,8 +63,16 @@ class GRU(nn.Module):
 
         self.embedding = nn.Embedding.from_pretrained(vocab.vectors)
         self.rnn = nn.GRU(embedding_dim, hidden_dim)
-        self.linear = nn.Sequential(
-            nn.Linear(hidden_dim, num_classes),
+        self.fc1 = nn.Sequential(
+            nn.Linear(hidden_dim, 64),
+            nn.Sigmoid()
+        )
+        self.fc2 = nn.Sequential(
+            nn.Linear(64, 32),
+            nn.Sigmoid()
+        )
+        self.fc3 = nn.Sequential(
+            nn.Linear(32, num_classes),
             nn.Sigmoid()
         )
 
@@ -61,7 +80,9 @@ class GRU(nn.Module):
         x = self.embedding(x)
         x = nn.utils.rnn.pack_padded_sequence(x, lengths)
         _, h = self.rnn(x)
-        return (self.linear(h)).squeeze()
+        h = self.fc1(h)
+        h = self.fc2(h)
+        return (self.fc3(h)).squeeze()
 
 
 class RNN(nn.Module):
