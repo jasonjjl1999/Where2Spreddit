@@ -178,7 +178,7 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--batch-size', type=int, default=64)
-    parser.add_argument('--lr', type=float, default=0.01)
+    parser.add_argument('--lr', type=float, default=0.0001)
     parser.add_argument('--epochs', type=int, default=25)
     parser.add_argument('--model', type=str, default='baseline',
                         help="Model type: baseline,rnn,cnn (Default: baseline)")
