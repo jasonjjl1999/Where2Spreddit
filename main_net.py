@@ -2,6 +2,7 @@ import torch
 import torch.optim as optim
 import matplotlib.pyplot as plt
 import torchtext
+from sklearn.metrics import confusion_matrix
 from torchtext import data
 import spacy
 import argparse
@@ -74,7 +75,7 @@ def main(args):
         skip_header=True, fields=[('text', text), ('label', labels)])
 
     train_iter, val_iter, test_iter = data.BucketIterator.splits(
-        (train_data, val_data, test_data), batch_sizes=(args.batch_size, args.batch_size, args.batch_size),
+        (train_data, val_data, test_data), batch_sizes=(args.batch_size, args.batch_size, len(test_data)),
         sort_key=lambda x: len(x.text), device=None, sort_within_batch=True, repeat=False)
 
     text.build_vocab(train_data, val_data, test_data)
@@ -158,6 +159,35 @@ def main(args):
 
     # Saving model
     # torch.save(net, 'model_rnn.pt')
+
+    # Confusion Matrix
+    inputs = test_data
+        #[0 for i in range(len(test_data))]
+#    for i in range(len(inputs)):
+#        print(test_data[i])
+#        inputs[i] = test_data[i]
+#    inputs = torch.Tensor(inputs)
+
+    cum_loss = 0
+    for (i, batch) in enumerate(test_iter, 1):
+        # Setting network to eval mode
+        net.eval()
+
+        # Getting data for current batch
+        batch_input, batch_length = batch.text
+        batch_input = batch_input.to(device)
+        batch_label = nn.functional.one_hot(batch.label).float()
+
+        # Forward step to get prediction
+        if model_type == 'rnn' or model_type == 'gru':
+            output = net(batch_input, batch_length)
+        else:
+            output = net(batch_input)
+
+    outputs = many_cold(output)
+    batch_label = many_cold(batch_label)
+    print("Below is Confusion Matrix for Test Set")
+    print(confusion_matrix(batch_label, outputs))
 
     # Plot Losses and Accuracy
     plt.figure()
