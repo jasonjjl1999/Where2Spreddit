@@ -13,31 +13,38 @@ label_list = 'Subreddit names vs labels in .csv files: \n \n'
 
 print('Obtained posts from:\n')
 
-n = 300  # Number of top posts to load from each subreddit
+n_train = 300  # Number of top posts to load from each subreddit for training
+n_valid = 100
+n_test = 50
 
-for label, subreddit in enumerate(subreddits):  # Create a .csv file for each subreddit
-    print(top_to_csv(subreddit, n, label, reddit))
-    label_list += 'r/' + subreddit + ': ' + str(label) + '\n'
+n = [n_train, n_valid, n_test]
+sample_types = ['train', 'valid', 'test']
 
-#  Store the label/subreddit correspondence in a text file.
-label_file = open('./dataset/labels.txt', 'w')
-label_file.write(label_list)
-label_file.close()
+for i, sample_type in enumerate(sample_types):
+    for label, subreddit in enumerate(subreddits):  # Create a .csv file for each subreddit
+        print(top_to_csv(subreddit, n[i], label, reddit, sample_type))
+        label_list += 'r/' + subreddit + ': ' + str(label) + '\n'
 
-# Read all .csv files in './dataset' directory
-dataset = []
-for filename in os.listdir('./dataset'):
-    if filename.endswith('.csv'):
-        dataset.append(pd.read_csv('./dataset/' + filename))
+    #  Store the label/subreddit correspondence in a text file.
+    if i == 0:  # Write the text file only once
+        label_file = open('./dataset/labels.txt', 'w')
+        label_file.write(label_list)
+        label_file.close()
 
-df = pd.concat(dataset, ignore_index=True)  # Concatenate all subreddit data into one dataframe
+    # Read all .csv files in './dataset/<sample_type>' directory
+    dataset = []
+    for filename in os.listdir('./dataset/'+sample_type+'/'):
+        if filename.endswith('.csv'):
+            dataset.append(pd.read_csv('./dataset/'+sample_type+'/'+ filename))
 
-directory = './dataset/training'
-if os.path.exists(directory) == False:  # Create 'dataset/training' directory if it does not already exist
-    os.mkdir(directory)
+    df = pd.concat(dataset, ignore_index=True)  # Concatenate all subreddit data into one dataframe
 
-df.to_csv(path_or_buf=directory + '/df.csv', index=False)
+    directory = './dataset/'+sample_type
+    if os.path.exists(directory) == False:  # Create 'dataset/training' directory if it does not already exist
+        os.mkdir(directory)
 
-print(df)
+    df.to_csv(path_or_buf=directory + '/'+sample_type+'.csv', index=False)
 
-data_split(df)
+    print(df)
+
+# data_split(df)
