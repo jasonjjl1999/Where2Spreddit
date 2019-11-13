@@ -67,9 +67,9 @@ def eval_acc(model, data, loss_fcn, model_type, type_of_eval):
 
 
 def main(args):
-    train_data_count = pd.read_csv('dataset/train/train.csv')
-    val_data_count = pd.read_csv('dataset/valid/valid.csv')
-    test_data_count = pd.read_csv('dataset/test/test.csv')
+    train_data_count = pd.read_csv('dataset/training/train.csv')
+    val_data_count = pd.read_csv('dataset/training/valid.csv')
+    test_data_count = pd.read_csv('dataset/training/test.csv')
 
     print('The count for each label in the training set is:')
     print(train_data_count['label'].value_counts())
@@ -82,8 +82,8 @@ def main(args):
     labels = data.Field(sequential=False, use_vocab=False)
 
     train_data, val_data, test_data = data.TabularDataset.splits(
-        path='./dataset', train='./train/train.csv',
-        validation='./valid/valid.csv', test='./test/test.csv', format='csv',
+        path='./dataset', train='./training/train.csv',
+        validation='./training/valid.csv', test='./training/test.csv', format='csv',
         skip_header=True, fields=[('text', text), ('label', labels)])
 
     train_iter, val_iter, test_iter = data.BucketIterator.splits(
