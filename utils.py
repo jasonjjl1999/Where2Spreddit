@@ -24,8 +24,8 @@ def top_to_csv(subreddit_name, n, label, reddit):
     dataset = []
     for submission in top:  # Iterate through each submission to add to a list
             dataset.append(
-                (filter(submission.title), label)
-                # (filter(submission.title)+' '+filter(submission.selftext), label)
+                # (filter(submission.title), label)
+                (filter(submission.title)+'. '+filter(submission.selftext), label)
             )
 
     dataframe = pd.DataFrame(dataset, columns=['text', 'label'])  # Convert list to DataFrame
