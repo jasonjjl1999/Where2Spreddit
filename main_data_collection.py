@@ -7,16 +7,30 @@ reddit = praw.Reddit(client_id='0bfjHES78X7Fyg',
 
 subreddits = [
     'jokes', 'askreddit', 'legaladvice', 'AmItheAsshole', 'tifu', 'todayilearned', 'unpopularopinion',
-    'NoStupidQuestions', 'relationship_advice', 'LifeProTips'
+    'relationship_advice', 'LifeProTips'
 ]  # List of classes that we will be identifying
 
 label_list = 'Subreddit names vs labels in .csv files: \n \n'
 
 print('Obtained posts from:\n')
 
-n_train = 50  # Number of top posts to load from each subreddit for training
+n_train = 600  # Number of top posts to load from each subreddit for training
+n_valid = 100
+n_test = 100
+
+'''
+Good for Overfitting:
+
+n_train = 300
 n_valid = 50
-n_test = 50
+n_test = 80
+
+Good for training: 
+
+n_train = 600 
+n_valid = 100
+n_test = 100
+'''
 
 n = [n_train, n_valid, n_test]
 sample_types = ['train', 'valid', 'test']
