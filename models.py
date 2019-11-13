@@ -63,14 +63,8 @@ class GRU(nn.Module):
 
         self.embedding = nn.Embedding.from_pretrained(vocab.vectors)
         self.rnn = nn.GRU(embedding_dim, hidden_dim)
-        self.fc1 = nn.Sequential(
-            nn.Linear(hidden_dim, 64),
-            F.relu()
-        )
-        self.fc2 = nn.Sequential(
-            nn.Linear(64, 32),
-            F.relu()
-        )
+        self.fc1 = nn.Linear(hidden_dim, 64)
+        self.fc2 = nn.Linear(64, 32)
         self.fc3 = nn.Sequential(
             nn.Linear(32, num_classes),
             nn.Sigmoid()
@@ -81,7 +75,9 @@ class GRU(nn.Module):
         x = nn.utils.rnn.pack_padded_sequence(x, lengths)
         _, h = self.rnn(x)
         h = self.fc1(h)
+        h = F.relu(h)
         h = self.fc2(h)
+        h = F.relu(h)
         return (self.fc3(h)).squeeze()
 
 
