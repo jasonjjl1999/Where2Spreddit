@@ -13,11 +13,12 @@ import random
 import pandas as pd
 
 # Set random seeds
-torch.manual_seed(0)
-torch.cuda.manual_seed(0)
-np.random.seed(0)
+seed = 324
+torch.manual_seed(seed)
+torch.cuda.manual_seed(seed)
+np.random.seed(seed)
 torch.backends.cudnn.deterministic = True
-random.seed(0)
+random.seed(seed)
 
 # Set default device (for GPU usage)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  # torchsummary
@@ -283,5 +284,7 @@ if __name__ == '__main__':
 --model baseline --lr 0.01 --epochs 100
 --model cnn --lr 0.01 --epochs 100
 --model gru --lr 0.001 --epochs 100 --rnn-hidden-dim 300
+
+used seed 324 for godmode
 
 '''
