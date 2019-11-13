@@ -7,6 +7,5 @@ r/AmItheAsshole: 3
 r/tifu: 4
 r/todayilearned: 5
 r/unpopularopinion: 6
-r/NoStupidQuestions: 7
-r/relationship_advice: 8
-r/LifeProTips: 9
+r/relationship_advice: 7
+r/LifeProTips: 8
