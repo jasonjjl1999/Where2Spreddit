@@ -1,4 +1,5 @@
 from utils import *
+from sklearn.utils import shuffle
 
 reddit = praw.Reddit(client_id='0bfjHES78X7Fyg',
                      client_secret='yyM87GD70mIP3qRToGuX1F59Sd4',
@@ -38,6 +39,7 @@ for i, sample_type in enumerate(sample_types):
             dataset.append(pd.read_csv('./dataset/'+sample_type+'/'+ filename))
 
     df = pd.concat(dataset, ignore_index=True)  # Concatenate all subreddit data into one dataframe
+    df = shuffle(df)
 
     directory = './dataset/'+sample_type
     if os.path.exists(directory) == False:  # Create 'dataset/training' directory if it does not already exist
@@ -47,4 +49,4 @@ for i, sample_type in enumerate(sample_types):
 
     print(df)
 
-# data_split(df)
+
