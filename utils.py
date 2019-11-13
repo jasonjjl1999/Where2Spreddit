@@ -10,14 +10,13 @@ from sklearn.utils import shuffle
 
 import numpy as np
 
-def top_to_csv(subreddit_name, n, label, reddit, sample_type):
+def top_to_csv(subreddit_name, n, label, reddit):
 
     # Scrapes the top 'n' posts of 'subreddit' and stores the post title, text body, and number of upvotes
-    # into a .csv file in the directory './dataset/<sample_type>'
+    # into a .csv file in the directory './dataset/'
     # The label is an input int that will be used to label posts from this subreddit
     # topToCSV requires that the reddit instance is passed in as an argument.
     # topToCSV returns the name of the output file.
-    # sample_type can be 'train', 'valid', or 'test
 
     subreddit = reddit.subreddit(subreddit_name)
 
@@ -39,13 +38,10 @@ def top_to_csv(subreddit_name, n, label, reddit, sample_type):
             )
     dataframe = pd.DataFrame(dataset, columns=['title', 'text', 'label'])  
     '''
-    filename = subreddit_name+'_top_'+str(n)+'_'+sample_type+'.csv'  # Output .csv filename
-    directory = './dataset/'+sample_type+'/'
+    filename = subreddit_name+'_top_'+str(n)+'.csv'  # Output .csv filename
+    directory = './dataset/'
 
-    if os.path.exists('./dataset/') == False:  # Create 'dataset' folder if it does not already exist
-        os.mkdir('./dataset/')
-
-    if os.path.exists(directory) == False:  # Create sub-folder if it does not already exist
+    if os.path.exists(directory) == False:  # Create 'dataset' directory if it does not already exist
         os.mkdir(directory)
     dataframe.to_csv(path_or_buf=directory+'/'+filename, index=False)
 
