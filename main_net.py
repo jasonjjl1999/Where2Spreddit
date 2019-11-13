@@ -176,7 +176,7 @@ def main(args):
         (train_data, val_data, test_data), batch_sizes=(len(train_data), len(val_data), len(test_data)),
         sort_key=lambda x: len(x.text), device=None, sort_within_batch=True, repeat=False)
 
-
+    '''
     for (i, batch) in enumerate(train_iter, 1):
         # Setting network to eval mode
         net.eval()
@@ -196,6 +196,7 @@ def main(args):
     batch_label = many_cold(batch_label)
     print("Below is Confusion Matrix for Training Set")
     print(confusion_matrix(batch_label, outputs))
+    '''
 
     for (i, batch) in enumerate(val_iter, 1):
         # Setting network to eval mode
@@ -216,6 +217,7 @@ def main(args):
     batch_label = many_cold(batch_label)
     print("Below is Confusion Matrix for Validation Set")
     print(confusion_matrix(batch_label, outputs))
+
 
     for (i, batch) in enumerate(test_iter, 1):
         # Setting network to eval mode
@@ -280,5 +282,6 @@ if __name__ == '__main__':
 '''
 --model baseline --lr 0.01 --epochs 100
 --model cnn --lr 0.01 --epochs 100
+--model gru --lr 0.001 --epochs 100 --rnn-hidden-dim 300
 
 '''
