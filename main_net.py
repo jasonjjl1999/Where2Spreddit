@@ -110,8 +110,10 @@ def main(args):
     if model_type == 'cnn':
         net = CNN(emb_dim, vocab, num_filt, [2, 4], num_classes)
 
-    elif model_type == 'rnn' or model_type == 'gru':
+    elif model_type == 'rnn':
         net = RNN(emb_dim, vocab, rnn_hidden_dim, num_classes)
+    elif model_type == 'gru':
+        net = GRU(emb_dim, vocab, rnn_hidden_dim, num_classes)
     else:
         net = Baseline(emb_dim, vocab, num_classes)
 
@@ -283,7 +285,7 @@ if __name__ == '__main__':
 '''
 --model baseline --lr 0.01 --epochs 100
 --model cnn --lr 0.01 --epochs 100
---model gru --lr 0.001 --epochs 100 --rnn-hidden-dim 300
+--model gru --lr 0.01 --epochs 100 --rnn-hidden-dim 100
 
 used seed 324 for godmode
 
