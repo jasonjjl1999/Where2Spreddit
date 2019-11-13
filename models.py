@@ -65,11 +65,11 @@ class GRU(nn.Module):
         self.rnn = nn.GRU(embedding_dim, hidden_dim)
         self.fc1 = nn.Sequential(
             nn.Linear(hidden_dim, 64),
-            nn.Sigmoid()
+            F.relu()
         )
         self.fc2 = nn.Sequential(
             nn.Linear(64, 32),
-            nn.Sigmoid()
+            F.relu()
         )
         self.fc3 = nn.Sequential(
             nn.Linear(32, num_classes),
