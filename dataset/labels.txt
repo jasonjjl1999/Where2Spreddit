@@ -9,3 +9,7 @@ r/todayilearned: 5
 r/unpopularopinion: 6
 r/relationship_advice: 7
 r/LifeProTips: 8
+r/askscience: 9
+r/personalfinance: 10
+r/offmychest: 11
+r/confession: 12

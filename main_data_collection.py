@@ -7,7 +7,7 @@ reddit = praw.Reddit(client_id='0bfjHES78X7Fyg',
 
 subreddits = [
     'jokes', 'askreddit', 'legaladvice', 'AmItheAsshole', 'tifu', 'todayilearned', 'unpopularopinion',
-    'relationship_advice', 'LifeProTips'
+    'relationship_advice', 'LifeProTips', 'askscience', 'personalfinance', 'offmychest', 'confession'
 ]  # List of classes that we will be identifying
 
 label_list = 'Subreddit names vs labels in .csv files: \n \n'
