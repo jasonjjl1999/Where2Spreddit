@@ -11,6 +11,7 @@ from models import *
 import numpy as np
 import random
 import pandas as pd
+from torchsummary import summary
 
 # Set random seeds
 seed = 324
@@ -263,8 +264,6 @@ def main(args):
     plt.legend()
     plt.show()
 
-    print(net)
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -286,7 +285,4 @@ if __name__ == '__main__':
 --model baseline --lr 0.01 --epochs 100
 --model cnn --lr 0.01 --epochs 100
 --model gru --lr 0.01 --epochs 100 --rnn-hidden-dim 100
-
-used seed 324 for godmode
-
 '''
