@@ -14,8 +14,8 @@ label_list = 'Subreddit names vs labels in .csv files: \n \n'
 
 print('Obtained posts from:\n')
 
-n_train = 600  # Number of top posts to load from each subreddit for training
-n_valid = 100
+n_train = 400  # Number of top posts to load from each subreddit for training
+n_valid = 80
 n_test = 100
 
 '''
