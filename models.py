@@ -12,7 +12,7 @@ class Baseline(nn.Module):
         self.fc2 = nn.Linear(64, 32)
         self.fc3 = nn.Sequential(
             nn.Linear(32, num_classes),
-            nn.Sigmoid()
+            nn.Softmax()
         )
 
     def forward(self, x, lengths=None):
@@ -43,7 +43,8 @@ class CNN(nn.Module):
         )
         self.linear = nn.Sequential(
             nn.Linear(100, num_classes),
-            nn.Sigmoid()
+            # nn.Softmax(dim=1)
+            nn.Softmax(dim=1)
         )
 
     def forward(self, x, lengths=None):
@@ -67,7 +68,7 @@ class GRU(nn.Module):
         self.fc2 = nn.Linear(64, 32)
         self.fc3 = nn.Sequential(
             nn.Linear(hidden_dim, num_classes),
-            nn.Sigmoid()
+            nn.Softmax(dim=2)
         )
 
     def forward(self, x, lengths=None):
@@ -92,7 +93,7 @@ class RNN(nn.Module):
         self.rnn = nn.RNN(embedding_dim, hidden_dim)
         self.linear = nn.Sequential(
             nn.Linear(hidden_dim, num_classes),
-            nn.Sigmoid()
+            nn.Softmax(dim=2)
         )
 
     def forward(self, x, lengths=None):
