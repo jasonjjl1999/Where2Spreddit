@@ -7,25 +7,17 @@ reddit = praw.Reddit(client_id='0bfjHES78X7Fyg',
 
 subreddits = [
     'jokes', 'askreddit', 'legaladvice', 'AmItheAsshole', 'tifu', 'todayilearned', 'unpopularopinion',
-<<<<<<< HEAD
-    'relationship_advice', 'LifeProTips', 'Showerthoughts'
-=======
-    'relationship_advice', 'LifeProTips', 'askscience', 'personalfinance', 'offmychest', 'confession'
->>>>>>> training
+    'relationship_advice', 'LifeProTips', 'LifeProTips', 'askscience', 'personalfinance',
+    'offmychest', 'confession', 'Showerthoughts'
 ]  # List of classes that we will be identifying
 
 label_list = 'Subreddit names vs labels in .csv files: \n \n'
 
 print('Obtained posts from:\n')
 
-<<<<<<< HEAD
-n_train = 800  # Number of top posts to load from each subreddit for training
-n_valid = 100
-=======
-n_train = 400  # Number of top posts to load from each subreddit for training
-n_valid = 80
->>>>>>> training
-n_test = 100
+n_train = 100  # Number of top posts to load from each subreddit for training
+n_valid = 20
+n_test = 50
 
 '''
 Good for Overfitting:
