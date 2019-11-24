@@ -14,7 +14,7 @@ import pandas as pd
 from torchsummary import summary
 
 # Set random seeds
-seed = 324
+seed = 123124
 torch.manual_seed(seed)
 torch.cuda.manual_seed(seed)
 np.random.seed(seed)
@@ -48,10 +48,6 @@ def one_hot(x, dim):
 def eval_acc(model, data, loss_fcn, model_type, type_of_eval):
     cum_corr, cum_total, cum_loss = 0, 0, 0
     for i, batch in enumerate(data, 0):
-        if type_of_eval == 'val' and (i > int(0.25 * (len(data.dataset) / args.batch_size))):
-            break
-        elif type_of_eval == 'test' and (i > 20.0 / 64.0 * int((len(data.dataset) / args.batch_size))):
-            break
         ind_batch, batch_length = batch.text
         ind_batch = ind_batch.to(device)
         label = batch.label.float()
@@ -159,9 +155,9 @@ def main(args):
         train_loss, train_acc = eval_acc(net, train_iter, loss_fcn, model_type, 'train')
         valid_loss, valid_acc = eval_acc(net, val_iter, loss_fcn, model_type, 'val')
 
-        plot_train_loss.append(cum_loss / (train_data_count.shape[0] / batch_size))
+        plot_train_loss.append(train_loss / (train_data_count.shape[0]))
         plot_train_acc.append(train_acc)
-        plot_valid_loss.append(valid_loss / (val_data_count.shape[0] / batch_size))
+        plot_valid_loss.append(valid_loss / (val_data_count.shape[0]))
         plot_valid_acc.append(valid_acc)
 
         # Print progress per batch to monitor progress
