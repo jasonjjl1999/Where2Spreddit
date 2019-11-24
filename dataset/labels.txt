@@ -1,0 +1,17 @@
+Subreddit names vs labels in .csv files: 
+ 
+r/jokes: 0
+r/askreddit: 1
+r/legaladvice: 2
+r/AmItheAsshole: 3
+r/tifu: 4
+r/todayilearned: 5
+r/unpopularopinion: 6
+r/relationship_advice: 7
+r/LifeProTips: 8
+r/LifeProTips: 9
+r/askscience: 10
+r/personalfinance: 11
+r/offmychest: 12
+r/confession: 13
+r/Showerthoughts: 14
