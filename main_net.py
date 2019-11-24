@@ -262,6 +262,19 @@ def main(args):
     plt.legend()
     plt.show()
 
+    # Save Model
+    if args.model == 'baseline':
+        torch.save(model, 'model_baseline.pt')
+
+    elif args.model == 'cnn':
+        torch.save(model, 'model_cnn.pt')
+
+    elif args.model == 'rnn':
+        torch.save(model, 'model_rnn.pt')
+
+    elif args.model == 'gru':
+        torch.save(model, 'model_gru.pt')
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
