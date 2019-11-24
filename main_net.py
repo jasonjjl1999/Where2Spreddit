@@ -65,6 +65,8 @@ def eval_acc(model, data, loss_fcn, model_type, type_of_eval):
 
 
 def main(args):
+    print(args.save)
+    print(not args.save)
     train_data_count = pd.read_csv('dataset/training/train.csv')
     val_data_count = pd.read_csv('dataset/training/valid.csv')
     test_data_count = pd.read_csv('dataset/training/test.csv')
@@ -170,7 +172,8 @@ def main(args):
     print('Final Test Loss: ' + str(test_loss / (epoch + 1)) + ', Final Test Acc: ' + str(test_acc))
 
     # Saving model
-    # torch.save(net, 'model_rnn.pt')
+    if args.save:
+        torch.save(net, 'model_' + model_type + '.pt')
 
     train_iter, val_iter, test_iter = data.BucketIterator.splits(
         (train_data, val_data, test_data), batch_sizes=(len(train_data), len(val_data), len(test_data)),
@@ -271,6 +274,7 @@ if __name__ == '__main__':
     parser.add_argument('--rnn-hidden-dim', type=int, default=100)
     parser.add_argument('--num-filt', type=int, default=50)
     parser.add_argument('--num-class', type=int, default=10)
+    parser.add_argument('--save', type=bool, default=False)
 
     args = parser.parse_args()
 
