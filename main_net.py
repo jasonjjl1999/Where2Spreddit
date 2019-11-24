@@ -218,7 +218,6 @@ def main(args):
     print("Below is Confusion Matrix for Validation Set")
     print(confusion_matrix(batch_label, outputs))
 
-
     for (i, batch) in enumerate(test_iter, 1):
         # Setting network to eval mode
         net.eval()
