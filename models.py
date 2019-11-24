@@ -12,7 +12,7 @@ class Baseline(nn.Module):
         self.fc2 = nn.Linear(64, 32)
         self.fc3 = nn.Sequential(
             nn.Linear(32, num_classes),
-            nn.Softmax()
+            nn.Softmax(dim=1)
         )
 
     def forward(self, x, lengths=None):
