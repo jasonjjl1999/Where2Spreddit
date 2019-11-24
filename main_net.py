@@ -159,9 +159,9 @@ def main(args):
         train_loss, train_acc = eval_acc(net, train_iter, loss_fcn, model_type, 'train')
         valid_loss, valid_acc = eval_acc(net, val_iter, loss_fcn, model_type, 'val')
 
-        plot_train_loss.append(cum_loss / (epoch + 1))
+        plot_train_loss.append(cum_loss / (train_data_count.shape[0]))
         plot_train_acc.append(train_acc)
-        plot_valid_loss.append(valid_loss / (epoch + 1))
+        plot_valid_loss.append(valid_loss / (val_data_count.shape[0]))
         plot_valid_acc.append(valid_acc)
 
         # Print progress per batch to monitor progress
