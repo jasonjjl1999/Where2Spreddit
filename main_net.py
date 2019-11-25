@@ -171,10 +171,6 @@ def main(args):
     test_loss, test_acc = eval_acc(net, test_iter, loss_fcn, model_type, 'test')
     print('Final Test Loss: ' + str(test_loss / (epoch + 1)) + ', Final Test Acc: ' + str(test_acc))
 
-    # Saving model
-    if args.save:
-        torch.save(net, 'model_' + model_type + '.pt')
-
     train_iter, val_iter, test_iter = data.BucketIterator.splits(
         (train_data, val_data, test_data), batch_sizes=(len(train_data), len(val_data), len(test_data)),
         sort_key=lambda x: len(x.text), device=None, sort_within_batch=True, repeat=False)
@@ -241,24 +237,15 @@ def main(args):
     print("Below is Confusion Matrix for Test Set")
     print(confusion_matrix(batch_label, outputs))
 
-    # Save Model
-    if args.model == 'baseline':
-        torch.save(net, 'model_baseline.pt')
-
-    elif args.model == 'cnn':
-        torch.save(net, 'model_cnn.pt')
-
-    elif args.model == 'rnn':
-        torch.save(net, 'model_rnn.pt')
-
-    elif args.model == 'gru':
-        torch.save(net, 'model_gru.pt')
+    # Saving model
+    if args.save:
+        torch.save(net, 'model_' + model_type + '.pt')
 
     # Plot Losses and Accuracy
     plt.figure()
     plt.plot(plot_epoch, plot_train_loss, label='Training Loss')
     plt.plot(plot_epoch, plot_valid_loss, label='Validation Loss')
-    plt.title('Losses as Function of Epoch ('+args.model+')')
+    plt.title('Losses as Function of Epoch (' + args.model + ')')
     plt.ylabel("Loss")
     plt.xlabel("Epoch")
     plt.legend()
@@ -268,7 +255,7 @@ def main(args):
     plt.figure()
     plt.plot(plot_epoch, plot_train_acc, label='Training Accuracy')
     plt.plot(plot_epoch, plot_valid_acc, label='Validation Accuracy')
-    plt.title('Accuracy as Function of Epoch ('+args.model+')')
+    plt.title('Accuracy as Function of Epoch (' + args.model + ')')
     plt.ylim(0, 1.01)
     plt.ylabel("Accuracy")
     plt.xlabel("Epoch")
