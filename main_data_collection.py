@@ -11,60 +11,63 @@ subreddits = [
     'worldnews', 'sports', 'history'
 ]  # List of classes that we will be identifying
 
-label_list = 'Subreddit names vs labels in .csv files: \n \n'
+if __name__ == '__main__':  # Do not recollect data on import
 
-print('Obtained posts from:\n')
 
-n_train = 700  # Number of top posts to load from each subreddit for training
-n_valid = 100
-n_test = 150
+    label_list = 'Subreddit names vs labels in .csv files: \n \n'
 
-'''
-Good for Overfitting:
+    print('Obtained posts from:\n')
 
-n_train = 300
-n_valid = 50
-n_test = 100
+    n_train = 700  # Number of top posts to load from each subreddit for training
+    n_valid = 100
+    n_test = 150
 
-Good for training: 
+    '''
+    Good for Overfitting:
+    
+    n_train = 300
+    n_valid = 50
+    n_test = 100
+    
+    Good for training: 
+    
+    n_train = 600 
+    n_valid = 100
+    n_test = 100
+    '''
 
-n_train = 600 
-n_valid = 100
-n_test = 100
-'''
+    n = [n_train, n_valid, n_test]
+    sample_types = ['train', 'valid', 'test']
 
-n = [n_train, n_valid, n_test]
-sample_types = ['train', 'valid', 'test']
+    for label, subreddit in enumerate(subreddits):  # Create a .csv file for each subreddit
+        print(top_to_csv(subreddit, sum(n)+50, label, reddit))  # Take 50 extra posts in case some are not text-based
+        label_list += 'r/' + subreddit + ': ' + str(label) + '\n'
 
-for label, subreddit in enumerate(subreddits):  # Create a .csv file for each subreddit
-    print(top_to_csv(subreddit, sum(n)+50, label, reddit))  # Take 50 extra posts in case some are not text-based
-    label_list += 'r/' + subreddit + ': ' + str(label) + '\n'
+        #  Store the label/subreddit correspondence in a text file.
+        label_file = open('./dataset/labels.txt', 'w')
+        label_file.write(label_list)
+        label_file.close()
 
-    #  Store the label/subreddit correspondence in a text file.
-    label_file = open('./dataset/labels.txt', 'w')
-    label_file.write(label_list)
-    label_file.close()
+    for i, sample_type in enumerate(sample_types):
+        # Read all .csv files in './dataset/' directory
+        dataset = []
+        for filename in os.listdir('./dataset/'):
+            if filename.endswith('.csv'):
+                sample = pd.read_csv('./dataset/' + filename)
+                if sample_type == 'train':
+                    dataset.append(sample[0:n_train])
+                elif sample_type == 'valid':
+                    dataset.append(sample[n_train:n_train + n_valid])
+                elif sample_type == 'test':
+                    dataset.append(sample[n_train + n_valid:n_train + n_valid + n_test])
 
-for i, sample_type in enumerate(sample_types):
-    # Read all .csv files in './dataset/' directory
-    dataset = []
-    for filename in os.listdir('./dataset/'):
-        if filename.endswith('.csv'):
-            sample = pd.read_csv('./dataset/' + filename)
-            if sample_type == 'train':
-                dataset.append(sample[0:n_train])
-            elif sample_type == 'valid':
-                dataset.append(sample[n_train:n_train + n_valid])
-            elif sample_type == 'test':
-                dataset.append(sample[n_train + n_valid:n_train + n_valid + n_test])
+        df = pd.concat(dataset, ignore_index=True)  # Concatenate all subreddit data into one dataframe
+        df = shuffle(df)
 
-    df = pd.concat(dataset, ignore_index=True)  # Concatenate all subreddit data into one dataframe
-    df = shuffle(df)
+        directory = './dataset/training/'
+        if os.path.exists(directory) == False:  # Create 'dataset/training' directory if it does not already exist
+            os.mkdir(directory)
 
-    directory = './dataset/training/'
-    if os.path.exists(directory) == False:  # Create 'dataset/training' directory if it does not already exist
-        os.mkdir(directory)
+        df.to_csv(path_or_buf=directory + '/' + sample_type + '.csv', index=False)
 
-    df.to_csv(path_or_buf=directory + '/' + sample_type + '.csv', index=False)
-
-    print(df)
+        print(df)
