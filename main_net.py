@@ -241,6 +241,19 @@ def main(args):
     print("Below is Confusion Matrix for Test Set")
     print(confusion_matrix(batch_label, outputs))
 
+    # Save Model
+    if args.model == 'baseline':
+        torch.save(net, 'model_baseline.pt')
+
+    elif args.model == 'cnn':
+        torch.save(net, 'model_cnn.pt')
+
+    elif args.model == 'rnn':
+        torch.save(net, 'model_rnn.pt')
+
+    elif args.model == 'gru':
+        torch.save(net, 'model_gru.pt')
+
     # Plot Losses and Accuracy
     plt.figure()
     plt.plot(plot_epoch, plot_train_loss, label='Training Loss')
@@ -261,19 +274,6 @@ def main(args):
     plt.xlabel("Epoch")
     plt.legend()
     plt.show()
-
-    # Save Model
-    if args.model == 'baseline':
-        torch.save(net, 'model_baseline.pt')
-
-    elif args.model == 'cnn':
-        torch.save(net, 'model_cnn.pt')
-
-    elif args.model == 'rnn':
-        torch.save(net, 'model_rnn.pt')
-
-    elif args.model == 'gru':
-        torch.save(net, 'model_gru.pt')
 
 
 if __name__ == '__main__':
