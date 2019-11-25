@@ -107,7 +107,7 @@ def main(args):
     num_filt = args.num_filt
     seed = 10
     if model_type == 'cnn':
-        net = CNN(emb_dim, vocab, num_filt, [2, 4], num_classes)
+        net = CNN(emb_dim, vocab, num_filt, [3, 4], num_classes)
 
     elif model_type == 'rnn':
         net = RNN(emb_dim, vocab, rnn_hidden_dim, num_classes)
@@ -285,7 +285,7 @@ if __name__ == '__main__':
                         help="Model type: baseline,rnn,cnn (Default: baseline)")
     parser.add_argument('--emb-dim', type=int, default=100)
     parser.add_argument('--rnn-hidden-dim', type=int, default=100)
-    parser.add_argument('--num-filt', type=int, default=50)
+    parser.add_argument('--num-filt', type=int, default=40)
     parser.add_argument('--num-class', type=int, default=16)
     parser.add_argument('--save', type=bool, default=False)
 
