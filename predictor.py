@@ -5,6 +5,9 @@ import numpy as np
 
 from models import *
 
+# Set default device (for GPU usage)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  # torchsummary
+
 text = data.Field(sequential=True, lower=True, tokenize='spacy', include_lengths=True)
 labels = data.Field(sequential=False, use_vocab=False)
 
@@ -29,10 +32,11 @@ def tokenizer(inp):
     return [tok.text for tok in spacy_en(inp)]
 
 
+'''
 def softmax(x):
     """Compute softmax values for each sets of scores in x."""
     return np.exp(x) / np.sum(np.exp(x), axis=0)
-
+'''
 
 while True:
     inp = input("Enter a sentence: ")
@@ -40,16 +44,37 @@ while True:
     tokens = tokenizer(inp)
     token_ints = [vocab.stoi[tok] for tok in tokens]
     token_tensor = torch.LongTensor(token_ints).view(-1, 1)
+    token_tensor = token_tensor.to(device)
     lengths = torch.Tensor([len(token_ints)])
     outputs = [0, 0, 0, 0]
-    outputs[0] = softmax(baseline_net(token_tensor).detach().numpy()[0])
-
-    # TODO: See next line
-    #  These should also be softmax'd. If they aren't when you test it, just add a softmax function like the above line
-    outputs[1] = cnn_net(token_tensor).detach().numpy()
-    outputs[2] = rnn_net(token_tensor, lengths).detach().numpy()
-    outputs[3] = gru_net(token_tensor, lengths).detach().numpy()
+    outputs[0] = baseline_net(token_tensor).cpu().detach().numpy()[0]
+    outputs[1] = cnn_net(token_tensor).cpu().detach().numpy()
+    outputs[2] = rnn_net(token_tensor, lengths).cpu().detach().numpy()
+    outputs[3] = gru_net(token_tensor, lengths).cpu().detach().numpy()
 
     models = ['baseline', 'cnn', 'rnn', 'gru']
-    for i in range(4):
+    for i in range(len(outputs)):
+        outputs[i] = [100 * prediction for prediction in outputs[i]]  # Multiply every value by 100 to get a percentage
         print('Model ' + models[i] + ': ' + '(' + str(outputs[i]) + ')')
+
+    for i in range(len(outputs)):  # Show the top 3 predictions
+        for j in range(len(outputs[i])):
+            outputs[i][j] = (outputs[i][j], j)  # Add index of element to tuple
+
+        outputs[i].sort(key=lambda x: x[0], reverse=True)  # Sort by first element
+        outputs[i] = outputs[i][0:3]  # Get the top 3 tuples
+
+    subreddits = [
+        'jokes', 'askreddit', 'legaladvice', 'AmItheAsshole', 'tifu', 'todayilearned', 'unpopularopinion',
+        'relationship_advice', 'LifeProTips', 'askscience', 'personalfinance', 'confession', 'science',
+        'worldnews', 'sports', 'history'
+    ]
+
+    print()
+    for i in range(len(outputs)):
+        print(models[i] + ' prediction:')
+        for top in range(3):
+            print(subreddits[outputs[i][top][1]] + ' with probability ' + str(round(outputs[i][top][0], 3)) + '%')
+        print()
+
+    print()
