@@ -41,6 +41,7 @@ def softmax(x):
 
 while True:
     inp = input("Enter a sentence: ")
+    inp = inp.lower()
 
     tokens = tokenizer(inp)
     token_ints = [vocab.stoi[tok] for tok in tokens]
