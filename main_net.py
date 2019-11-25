@@ -245,7 +245,7 @@ def main(args):
     plt.figure()
     plt.plot(plot_epoch, plot_train_loss, label='Training Loss')
     plt.plot(plot_epoch, plot_valid_loss, label='Validation Loss')
-    plt.title("Losses as Function of Epoch")
+    plt.title('Losses as Function of Epoch ('+args.model+')')
     plt.ylabel("Loss")
     plt.xlabel("Epoch")
     plt.legend()
@@ -255,7 +255,7 @@ def main(args):
     plt.figure()
     plt.plot(plot_epoch, plot_train_acc, label='Training Accuracy')
     plt.plot(plot_epoch, plot_valid_acc, label='Validation Accuracy')
-    plt.title("Accuracy as Function of Epoch")
+    plt.title('Accuracy as Function of Epoch ('+args.model+')')
     plt.ylim(0, 1.01)
     plt.ylabel("Accuracy")
     plt.xlabel("Epoch")
@@ -294,14 +294,25 @@ if __name__ == '__main__':
     main(args)
 
 '''
+BASELINE:
+
 --model baseline --lr 0.01 --epochs 100
+
+CNN:
+
 --model cnn --lr 0.001 --epochs 100
+
+GRU:
+
 --model gru --lr 0.01 --epochs 100 --rnn-hidden-dim 100 *****
 --model gru --lr 0.01 --epochs 100 --rnn-hidden-dim 50 *****
 --model gru --lr 0.001 --epochs 100 --rnn-hidden-dim 100
+
+RNN:
+
 --model rnn --lr 0.0001 --epochs 100 --rnn-hidden-dim 100 
 
 
-DON'T FORGET TO CHANGE --num-class PARAMETER
+                 [ DON'T FORGET TO CHANGE --num-class PARAMETER ]
 
 '''
