@@ -18,10 +18,10 @@ text.build_vocab(train_data, val_data, test_data)
 text.vocab.load_vectors(torchtext.vocab.GloVe(name='6B', dim=100))
 vocab = text.vocab
 
-baseline_net = torch.load('model_baseline.pt')
-cnn_net = torch.load('model_cnn.pt')
-rnn_net = torch.load('model_rnn.pt')
-gru_net = torch.load('model_gru.pt')
+baseline_net = torch.load('trained_models/model_baseline.pt')
+cnn_net = torch.load('trained_models/model_cnn.pt')
+rnn_net = torch.load('trained_models/model_rnn.pt')
+gru_net = torch.load('trained_models/model_gru.pt')
 
 
 def tokenizer(inp):
