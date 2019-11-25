@@ -14,7 +14,7 @@ import pandas as pd
 from torchsummary import summary
 
 # Set random seeds
-seed = 123124
+seed = 324
 torch.manual_seed(seed)
 torch.cuda.manual_seed(seed)
 np.random.seed(seed)
@@ -297,6 +297,8 @@ if __name__ == '__main__':
 --model baseline --lr 0.01 --epochs 100
 --model cnn --lr 0.01 --epochs 100
 --model gru --lr 0.01 --epochs 100 --rnn-hidden-dim 100
+--model gru --lr 0.01 --epochs 100 --rnn-hidden-dim 50
+--model gru --lr 0.001 --epochs 100 --rnn-hidden-dim 100 *****
 
 DON'T FORGET TO CHANGE --num-class PARAMETER
 
