@@ -14,7 +14,7 @@ import pandas as pd
 from torchsummary import summary
 
 # Set random seeds
-seed = 324
+seed = 1234
 torch.manual_seed(seed)
 torch.cuda.manual_seed(seed)
 np.random.seed(seed)
@@ -286,7 +286,7 @@ if __name__ == '__main__':
     parser.add_argument('--emb-dim', type=int, default=100)
     parser.add_argument('--rnn-hidden-dim', type=int, default=100)
     parser.add_argument('--num-filt', type=int, default=50)
-    parser.add_argument('--num-class', type=int, default=10)
+    parser.add_argument('--num-class', type=int, default=16)
     parser.add_argument('--save', type=bool, default=False)
 
     args = parser.parse_args()
@@ -295,10 +295,10 @@ if __name__ == '__main__':
 
 '''
 --model baseline --lr 0.01 --epochs 100
---model cnn --lr 0.01 --epochs 100
---model gru --lr 0.01 --epochs 100 --rnn-hidden-dim 100
---model gru --lr 0.01 --epochs 100 --rnn-hidden-dim 50
---model gru --lr 0.001 --epochs 100 --rnn-hidden-dim 100 *****
+--model cnn --lr 0.001 --epochs 100
+--model gru --lr 0.01 --epochs 100 --rnn-hidden-dim 100 *****
+--model gru --lr 0.01 --epochs 100 --rnn-hidden-dim 50 *****
+--model gru --lr 0.001 --epochs 100 --rnn-hidden-dim 100 
 
 DON'T FORGET TO CHANGE --num-class PARAMETER
 
