@@ -31,6 +31,7 @@ class CNN(nn.Module):
     def __init__(self, embedding_dim, vocab, n_filters, filter_sizes, num_classes):
         super(CNN, self).__init__()
 
+        self.n_filters = n_filters
         self.embed = nn.Embedding(len(vocab), embedding_dim)
         self.embed.from_pretrained(vocab.vectors)
         self.conv1 = nn.Sequential(
@@ -43,7 +44,6 @@ class CNN(nn.Module):
         )
         self.linear = nn.Sequential(
             nn.Linear(2*n_filters, num_classes),
-            # nn.Softmax(dim=1)
             nn.Softmax(dim=1)
         )
 
@@ -55,6 +55,8 @@ class CNN(nn.Module):
         x2 = self.conv2(x)
         x2, _ = torch.max(x2, 2)
         x = torch.cat([x1, x2], 1).squeeze()
+        x = x.view(-1, 2*self.n_filters)  # For input batches of size 1, squeeze may get rid of too many dimensions
+
         return (self.linear(x)).squeeze()
 
 
