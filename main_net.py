@@ -299,6 +299,7 @@ if __name__ == '__main__':
 --model gru --lr 0.01 --epochs 100 --rnn-hidden-dim 100 *****
 --model gru --lr 0.01 --epochs 100 --rnn-hidden-dim 50 *****
 --model gru --lr 0.001 --epochs 100 --rnn-hidden-dim 100 
+--model rnn --lr 0.0001 --epochs 100 --rnn-hidden-dim 100 
 
 DON'T FORGET TO CHANGE --num-class PARAMETER
 
