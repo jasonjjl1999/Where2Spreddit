@@ -264,16 +264,16 @@ def main(args):
 
     # Save Model
     if args.model == 'baseline':
-        torch.save(model, 'model_baseline.pt')
+        torch.save(net, 'model_baseline.pt')
 
     elif args.model == 'cnn':
-        torch.save(model, 'model_cnn.pt')
+        torch.save(net, 'model_cnn.pt')
 
     elif args.model == 'rnn':
-        torch.save(model, 'model_rnn.pt')
+        torch.save(net, 'model_rnn.pt')
 
     elif args.model == 'gru':
-        torch.save(model, 'model_gru.pt')
+        torch.save(net, 'model_gru.pt')
 
 
 if __name__ == '__main__':
