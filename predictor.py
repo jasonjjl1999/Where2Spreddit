@@ -3,6 +3,7 @@ from torchtext import data
 import spacy
 import numpy as np
 
+from main_data_collection import subreddits  # Import this list to get the actual (subreddit) names of labels
 from models import *
 
 # Set default device (for GPU usage)
@@ -63,12 +64,6 @@ while True:
 
         outputs[i].sort(key=lambda x: x[0], reverse=True)  # Sort by first element
         outputs[i] = outputs[i][0:3]  # Get the top 3 tuples
-
-    subreddits = [
-        'jokes', 'askreddit', 'legaladvice', 'AmItheAsshole', 'tifu', 'todayilearned', 'unpopularopinion',
-        'relationship_advice', 'LifeProTips', 'askscience', 'personalfinance', 'confession', 'science',
-        'worldnews', 'sports', 'history'
-    ]
 
     print()
     for i in range(len(outputs)):
