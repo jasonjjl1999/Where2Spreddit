@@ -75,6 +75,7 @@ class GRU(nn.Module):
         x = self.embedding(x)
         x = nn.utils.rnn.pack_padded_sequence(x, lengths)
         _, h = self.rnn(x)
+
         '''
         h = self.fc1(h)
         h = F.relu(h)
