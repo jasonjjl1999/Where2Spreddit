@@ -54,9 +54,12 @@ while True:
     outputs[3] = gru_net(token_tensor, lengths).cpu().detach().numpy()
 
     models = ['baseline', 'cnn', 'rnn', 'gru']
+
+
     for i in range(len(outputs)):
         outputs[i] = [100 * prediction for prediction in outputs[i]]  # Multiply every value by 100 to get a percentage
-        print('Model ' + models[i] + ': ' + '(' + str(outputs[i]) + ')')
+        # print('Model ' + models[i] + ': ' + '(' + str(outputs[i]) + ')')
+
 
     for i in range(len(outputs)):  # Show the top 3 predictions
         for j in range(len(outputs[i])):
