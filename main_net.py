@@ -11,7 +11,8 @@ from models import *
 import numpy as np
 import random
 import pandas as pd
-from torchsummary import summary
+from confusion import plot_confusion_matrix
+from main_data_collection import subreddits  # Import this list to get the actual (subreddit) names of labels
 
 # Set random seeds
 seed = 1234
@@ -217,6 +218,8 @@ def main(args):
     print("Below is Confusion Matrix for Validation Set")
     print(confusion_matrix(batch_label, outputs))
 
+
+
     for (i, batch) in enumerate(test_iter, 1):
         # Setting network to eval mode
         net.eval()
@@ -235,7 +238,9 @@ def main(args):
     outputs = many_cold(output)
     batch_label = many_cold(batch_label)
     print("Below is Confusion Matrix for Test Set")
-    print(confusion_matrix(batch_label, outputs))
+    plot_confusion_matrix(batch_label, outputs, classes=subreddits)
+    plt.show()
+
 
     # Saving model
     if args.save:
