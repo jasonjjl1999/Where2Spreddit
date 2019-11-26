@@ -42,8 +42,8 @@ def plot_confusion_matrix(y_true, y_pred, classes,
 
     # Set limits for plot
     axes = plt.gca()
-    axes.set_xlim([-1, 15])
-    axes.set_ylim([-1, 15])
+    axes.set_xlim([-1, 16])
+    axes.set_ylim([-1, 16])
 
     # Loop over data dimensions and create text annotations.
     fmt = '.2f' if normalize else 'd'

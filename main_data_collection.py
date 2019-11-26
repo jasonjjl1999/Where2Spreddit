@@ -6,8 +6,8 @@ reddit = praw.Reddit(client_id='0bfjHES78X7Fyg',
                      user_agent='SubredditPredictor')
 
 subreddits = [
-    'jokes', 'askreddit', 'legaladvice', 'AmItheAsshole', 'tifu', 'todayilearned', 'unpopularopinion',
-    'relationship_advice', 'LifeProTips', 'askscience', 'personalfinance', 'confession', 'science',
+    'jokes', 'askreddit', 'legaladvice', 'AmItheAsshole', 'tifu', 'todayilearned', 'technology',
+    'relationship_advice', 'LifeProTips', 'askscience', 'personalfinance', 'movies', 'science',
     'worldnews', 'sports', 'history'
 ]  # List of classes that we will be identifying
 
@@ -18,9 +18,9 @@ if __name__ == '__main__':  # Do not recollect data on import
 
     print('Obtained posts from:\n')
 
-    n_train = 700  # Number of top posts to load from each subreddit for training
-    n_valid = 100
-    n_test = 150
+    n_train = 600  # Number of top posts to load from each subreddit for training
+    n_valid = 80
+    n_test = 100
 
     '''
     Good for Overfitting:
