@@ -47,7 +47,7 @@ class CNN(nn.Module):
         self.conv2_BN = nn.BatchNorm2d(n_filters)
         '''
         self.linear = nn.Sequential(
-            nn.Linear(2*n_filters, num_classes),
+            nn.Linear(2 * n_filters, num_classes),
             nn.Softmax(dim=1)
         )
 
@@ -59,9 +59,10 @@ class CNN(nn.Module):
         x2 = self.conv2(x)
         x2, _ = torch.max(x2, 2)
         x = torch.cat([x1, x2], 1).squeeze()
-        x = x.view(-1, 2*self.n_filters)  # For input batches of size 1, squeeze may get rid of too many dimensions
+        x = x.view(-1, 2 * self.n_filters)  # For input batches of size 1, squeeze may get rid of too many dimensions
 
         return (self.linear(x)).squeeze()
+
 
 class CNN_alternate(nn.Module):
     def __init__(self, embedding_dim, vocab, n_filters, filter_sizes, num_classes):
@@ -78,7 +79,7 @@ class CNN_alternate(nn.Module):
             nn.Conv2d(1, n_filters, (filter_sizes[1], embedding_dim)),
             nn.ReLU()
         )
-        self.fc1 = nn.Linear(2*n_filters, 64)
+        self.fc1 = nn.Linear(2 * n_filters, 64)
         self.fc2 = nn.Linear(64, 32)
         self.fc3 = nn.Sequential(
             nn.Linear(32, num_classes),
@@ -93,7 +94,7 @@ class CNN_alternate(nn.Module):
         x2 = self.conv2(x)
         x2, _ = torch.max(x2, 2)
         x = torch.cat([x1, x2], 1).squeeze()
-        x = x.view(-1, 2*self.n_filters)  # For input batches of size 1, squeeze may get rid of too many dimensions
+        x = x.view(-1, 2 * self.n_filters)  # For input batches of size 1, squeeze may get rid of too many dimensions
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
         return (self.fc3(x)).squeeze()
@@ -157,7 +158,6 @@ class RNNAlternate(nn.Module):
             nn.Linear(64, num_classes),
             nn.Softmax(dim=1)
         )
-
 
     def forward(self, x, lengths=None):
         x = self.embedding(x)
