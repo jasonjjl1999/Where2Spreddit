@@ -287,7 +287,7 @@ if __name__ == '__main__':
     parser.add_argument('--emb-dim', type=int, default=100)
     parser.add_argument('--rnn-hidden-dim', type=int, default=100)
     parser.add_argument('--num-filt', type=int, default=40)
-    parser.add_argument('--num-class', type=int, default=16)
+    parser.add_argument('--num-class', type=int, default=17)
     parser.add_argument('--save', type=bool, default=True)
     parser.add_argument('--tokenizer', type=str, choices=['spacy', 'crazy'], default='spacy')
 
