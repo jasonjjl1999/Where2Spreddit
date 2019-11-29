@@ -26,18 +26,13 @@ baseline_net = torch.load('trained_models/model_baseline.pt', map_location=torch
 cnn_net = torch.load('trained_models/model_cnn.pt', map_location=torch.device(device))
 rnn_net = torch.load('trained_models/model_rnn.pt', map_location=torch.device(device))
 gru_net = torch.load('trained_models/model_gru.pt', map_location=torch.device(device))
+lstm_net = torch.load('trained_models/model_lstm.pt', map_location=torch.device(device))
 
 
 def tokenizer(inp):
     spacy_en = spacy.load('en')
     return [tok.text for tok in spacy_en(inp)]
 
-
-'''
-def softmax(x):
-    """Compute softmax values for each sets of scores in x."""
-    return np.exp(x) / np.sum(np.exp(x), axis=0)
-'''
 
 while True:
     inp = input("Enter a sentence: ")
@@ -48,13 +43,14 @@ while True:
     token_tensor = torch.LongTensor(token_ints).view(-1, 1)
     token_tensor = token_tensor.to(device)
     lengths = torch.Tensor([len(token_ints)])
-    outputs = [0, 0, 0, 0]
+    outputs = [0, 0, 0, 0, 0]
     outputs[0] = baseline_net(token_tensor).cpu().detach().numpy()[0]
     outputs[1] = cnn_net(token_tensor).cpu().detach().numpy()
     outputs[2] = rnn_net(token_tensor, lengths).cpu().detach().numpy()
     outputs[3] = gru_net(token_tensor, lengths).cpu().detach().numpy()
+    outputs[4] = lstm_net(token_tensor, lengths).cpu().detach().numpy()
 
-    models = ['baseline', 'cnn', 'rnn', 'gru']
+    models = ['baseline', 'cnn', 'rnn', 'gru', 'lstm']
 
     for i in range(len(outputs)):
         outputs[i] = [100 * prediction for prediction in outputs[i]]  # Multiply every value by 100 to get a percentage
