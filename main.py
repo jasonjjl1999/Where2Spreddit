@@ -11,6 +11,8 @@ import torch.optim as optim
 import torchtext
 from torchtext import data
 
+from redditscore.tokenizer import CrazyTokenizer
+
 from models import *
 from confusion import plot_confusion_matrix
 from main_data_collection import subreddits  # Import this list to get the actual (subreddit) names of labels
@@ -63,6 +65,7 @@ def eval_acc(model, data, loss_fcn, model_type, type_of_eval):
         cum_total += label.size(0)
         cum_corr += int((many_cold(output).squeeze().float() == label).sum())
         cum_loss += loss_fcn(output, label.long().to(device))
+    print(type_of_eval, cum_total)
     return float(cum_loss), float(cum_corr / cum_total)
 
 
@@ -80,7 +83,15 @@ def main(args):
     print('The count for each label in the testing set is:')
     print(test_data_count['label'].value_counts())
 
-    text = data.Field(sequential=True, lower=True, tokenize='spacy', include_lengths=True)
+
+    if args.tokenizer == 'crazy':
+        print('The tokenizer is CrazyTokenizer')
+        tokenizer = CrazyTokenizer().tokenize
+    else:
+        print('The tokenizer is spacy')
+        tokenizer = 'spacy'
+
+    text = data.Field(sequential=True, lower=True, tokenize=tokenizer, include_lengths=True)
     labels = data.Field(sequential=False, use_vocab=False)
 
     train_data, val_data, test_data = data.TabularDataset.splits(
@@ -108,7 +119,7 @@ def main(args):
     num_filt = args.num_filt
 
     if model_type == 'cnn':
-        net = CNN(emb_dim, vocab, num_filt, [3, 4], num_classes)
+        net = CNN(emb_dim, vocab, num_filt, [2, 4], num_classes)
     elif model_type == 'rnn':
         net = RNN(emb_dim, vocab, rnn_hidden_dim, num_classes)
     elif model_type == 'gru':
@@ -280,8 +291,9 @@ if __name__ == '__main__':
     parser.add_argument('--emb-dim', type=int, default=100)
     parser.add_argument('--rnn-hidden-dim', type=int, default=100)
     parser.add_argument('--num-filt', type=int, default=40)
-    parser.add_argument('--num-class', type=int, default=16)
+    parser.add_argument('--num-class', type=int, default=17)
     parser.add_argument('--save', type=bool, default=True)
+    parser.add_argument('--tokenizer', type=str, choices=['spacy', 'crazy'], default='spacy')
 
     args = parser.parse_args()
 
