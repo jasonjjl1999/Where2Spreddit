@@ -208,6 +208,9 @@ def main(args):
     print(confusion_matrix(batch_label, outputs))
     '''
 
+    batch_label = torch.empty(0).to(device).float()
+    output = torch.empty(0).to(device)
+
     for (i, batch) in enumerate(val_iter, 1):
         # Setting network to eval mode
         net.eval()
@@ -215,18 +218,20 @@ def main(args):
         # Getting data for current batch
         batch_input, batch_length = batch.text
         batch_input = batch_input.to(device)
-        batch_label = nn.functional.one_hot(batch.label).float()
+        batch_label = torch.cat((batch_label, batch.label.to(device).float()))
 
         # Forward step to get prediction
         if model_type == 'rnn' or model_type == 'gru' or model_type == 'lstm':
-            output = net(batch_input, batch_length)
+            output = torch.cat((output, net(batch_input, batch_length)))
         else:
-            output = net(batch_input)
+            output = torch.cat((output, net(batch_input)))
 
     outputs = many_cold(output)
-    batch_label = many_cold(batch_label)
     print("Below is Confusion Matrix for Validation Set")
-    print(confusion_matrix(batch_label, outputs))
+    print(confusion_matrix(batch_label.cpu(), outputs.cpu()))
+
+    batch_label = torch.empty(0).to(device).float()
+    output = torch.empty(0).to(device)
 
     for (i, batch) in enumerate(test_iter, 1):
         # Setting network to eval mode
@@ -235,16 +240,16 @@ def main(args):
         # Getting data for current batch
         batch_input, batch_length = batch.text
         batch_input = batch_input.to(device)
-        batch_label = nn.functional.one_hot(batch.label).float()
+        batch_label = torch.cat((batch_label, batch.label.to(device).float()))
 
         # Forward step to get prediction
         if model_type == 'rnn' or model_type == 'gru' or model_type == 'lstm':
-            output = net(batch_input, batch_length)
+            output = torch.cat((output, net(batch_input, batch_length)))
         else:
-            output = net(batch_input)
+            output = torch.cat((output, net(batch_input)))
 
     outputs = many_cold(output)
-    batch_label = many_cold(batch_label)
+
 
     # Saving model
     if args.save:
@@ -252,7 +257,7 @@ def main(args):
 
     # Confusion Matrix
     print("Below is Confusion Matrix for Test Set")
-    plot_confusion_matrix(batch_label, outputs, classes=subreddits)
+    plot_confusion_matrix(batch_label.cpu(), outputs.cpu(), classes=subreddits)
     plt.show()
 
 
@@ -322,5 +327,15 @@ LSTM:
 
 
                  [ DON'T FORGET TO CHANGE --num-class PARAMETER ]
+                 
+                 
+FOR LARGER DATASETS
+
+GRU:
+
+    n_train = 1500
+    n_valid = 200
+    n_test = 300
+--model gru --lr 0.001 --epochs 150 --rnn-hidden-dim 100 --batch-size 1024
 
 '''

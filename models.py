@@ -77,7 +77,7 @@ class GRU(nn.Module):
 
     def forward(self, x, lengths=None):
         x = self.embedding(x)
-        x = nn.utils.rnn.pack_padded_sequence(x, lengths)
+        x = nn.utils.rnn.pack_padded_sequence(x, lengths, enforce_sorted=False)
         h = self.rnn(x)[1]
         return (self.linear(h)).squeeze()
 
@@ -95,7 +95,7 @@ class RNN(nn.Module):
 
     def forward(self, x, lengths=None):
         x = self.embedding(x)
-        x = nn.utils.rnn.pack_padded_sequence(x, lengths)
+        x = nn.utils.rnn.pack_padded_sequence(x, lengths, enforce_sorted=False)
         h = self.rnn(x)[1]
         return (self.linear(h)).squeeze()
 
@@ -113,7 +113,7 @@ class LSTM(nn.Module):
 
     def forward(self, x, lengths=None):
         x = self.embedding(x)
-        x = nn.utils.rnn.pack_padded_sequence(x, lengths)
+        x = nn.utils.rnn.pack_padded_sequence(x, lengths, enforce_sorted=False)
         h = self.lstm(x)[1][
             0]  # lstm cell has two outputs in the form of a tuple, so we take the first element (hidden layer)
         return (self.linear(h)).squeeze()
