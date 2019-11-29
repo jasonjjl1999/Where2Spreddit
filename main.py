@@ -181,11 +181,12 @@ def main(args):
     test_loss, test_acc = eval_acc(net, test_iter, loss_fcn, model_type, 'test')
     print('Final Test Loss: ' + str(test_loss / (epoch + 1)) + ', Final Test Acc: ' + str(test_acc))
 
+    '''
     train_iter, val_iter, test_iter = data.BucketIterator.splits(
         (train_data, val_data, test_data), batch_sizes=(len(train_data), len(val_data), len(test_data)),
         sort_key=lambda x: len(x.text), device=None, sort_within_batch=True, repeat=False)
 
-    '''
+
     for (i, batch) in enumerate(train_iter, 1):
         # Setting network to eval mode
         net.eval()

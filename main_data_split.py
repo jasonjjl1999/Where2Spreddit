@@ -4,9 +4,9 @@ from utils import *
 
 if __name__ == '__main__':
 
-    n_train = 8000
-    n_valid = 0
-    n_test = 0
+    n_train = 1500
+    n_valid = 200
+    n_test = 300
 
     n = [n_train, n_valid, n_test]
     sample_types = ['train', 'valid', 'test']
