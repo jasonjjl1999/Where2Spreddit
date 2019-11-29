@@ -18,7 +18,7 @@ subreddits = [
 
 if __name__ == '__main__':  # Do not recollect data on import
 
-    n = 100
+    n = 8000
 
     label_list = 'Subreddit names vs labels in .csv files: \n \n'
 

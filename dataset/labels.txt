@@ -14,6 +14,5 @@ r/movies: 10
 r/science: 11
 r/worldnews: 12
 r/history: 13
-r/AskWomen: 14
-r/space: 15
-r/sports: 16
+r/space: 14
+r/sports: 15
