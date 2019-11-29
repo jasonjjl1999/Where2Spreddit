@@ -1,5 +1,8 @@
 from utils import *
-from sklearn.utils import shuffle
+
+
+from psaw import PushshiftAPI
+import praw
 
 from psaw import PushshiftAPI
 import praw
@@ -22,9 +25,15 @@ if __name__ == '__main__':  # Do not recollect data on import
 
     print('Obtained posts from:\n')
 
+<<<<<<< HEAD
     n_train = 500  # Number of top posts to load from each subreddit for training
     n_valid = 80
     n_test = 120
+=======
+    n_train = 4000  # Number of top posts to load from each subreddit for training
+    n_valid = 300
+    n_test = 500
+>>>>>>> master
 
     '''
     Good for Overfitting:
@@ -44,34 +53,14 @@ if __name__ == '__main__':  # Do not recollect data on import
     sample_types = ['train', 'valid', 'test']
 
     for label, subreddit in enumerate(subreddits):  # Create a .csv file for each subreddit
+<<<<<<< HEAD
         print(top_to_csv(subreddit, sum(n) + 50, label, reddit, api))  # Take 50 extra posts in case some are not text-based
+=======
+        print(top_to_csv(subreddit, sum(n) + 100, label, reddit, api))  # Take 100 extra posts in case some are not text-based
+>>>>>>> master
         label_list += 'r/' + subreddit + ': ' + str(label) + '\n'
 
         #  Store the label/subreddit correspondence in a text file.
         label_file = open('./dataset/labels.txt', 'w')
         label_file.write(label_list)
         label_file.close()
-
-    for i, sample_type in enumerate(sample_types):
-        # Read all .csv files in './dataset/' directory
-        dataset = []
-        for filename in os.listdir('./dataset/'):
-            if filename.endswith('.csv'):
-                sample = pd.read_csv('./dataset/' + filename)
-                if sample_type == 'train':
-                    dataset.append(sample[0:n_train])
-                elif sample_type == 'valid':
-                    dataset.append(sample[n_train:n_train + n_valid])
-                elif sample_type == 'test':
-                    dataset.append(sample[n_train + n_valid:n_train + n_valid + n_test])
-
-        df = pd.concat(dataset, ignore_index=True)  # Concatenate all subreddit data into one dataframe
-        df = shuffle(df)
-
-        directory = './dataset/training/'
-        if os.path.exists(directory) == False:  # Create 'dataset/training' directory if it does not already exist
-            os.mkdir(directory)
-
-        df.to_csv(path_or_buf=directory + '/' + sample_type + '.csv', index=False)
-
-        print(df)

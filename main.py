@@ -69,8 +69,6 @@ def eval_acc(model, data, loss_fcn, model_type, type_of_eval):
 
 
 def main(args):
-    print(args.save)
-    print(not args.save)
     train_data_count = pd.read_csv('dataset/training/train.csv')
     val_data_count = pd.read_csv('dataset/training/valid.csv')
     test_data_count = pd.read_csv('dataset/training/test.csv')
@@ -82,6 +80,10 @@ def main(args):
     print('The count for each label in the testing set is:')
     print(test_data_count['label'].value_counts())
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
     if args.tokenizer == 'crazy':
         print('The tokenizer is CrazyTokenizer')
         tokenizer = CrazyTokenizer().tokenize
@@ -89,7 +91,10 @@ def main(args):
         print('The tokenizer is spacy')
         tokenizer = 'spacy'
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     text = data.Field(sequential=True, lower=True, tokenize=tokenizer, include_lengths=True)
     labels = data.Field(sequential=False, use_vocab=False)
 
@@ -118,7 +123,7 @@ def main(args):
     num_filt = args.num_filt
 
     if model_type == 'cnn':
-        net = CNN(emb_dim, vocab, num_filt, [3, 4], num_classes)
+        net = CNN(emb_dim, vocab, num_filt, [2, 4], num_classes)
     elif model_type == 'rnn':
         net = RNN(emb_dim, vocab, rnn_hidden_dim, num_classes)
     elif model_type == 'gru':
