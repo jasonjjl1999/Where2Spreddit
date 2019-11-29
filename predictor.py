@@ -22,10 +22,10 @@ text.build_vocab(train_data, val_data, test_data)
 text.vocab.load_vectors(torchtext.vocab.GloVe(name='6B', dim=100))
 vocab = text.vocab
 
-baseline_net = torch.load('trained_models/model_baseline.pt')
-cnn_net = torch.load('trained_models/model_cnn.pt')
-rnn_net = torch.load('trained_models/model_rnn.pt')
-gru_net = torch.load('trained_models/model_gru.pt')
+baseline_net = torch.load('trained_models/model_baseline.pt', map_location=torch.device(device))
+cnn_net = torch.load('trained_models/model_cnn.pt', map_location=torch.device(device))
+rnn_net = torch.load('trained_models/model_rnn.pt', map_location=torch.device(device))
+gru_net = torch.load('trained_models/model_gru.pt', map_location=torch.device(device))
 
 
 def tokenizer(inp):
