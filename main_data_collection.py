@@ -21,19 +21,11 @@ subreddits = [
 
 if __name__ == '__main__':  # Do not recollect data on import
 
+    n = 200
+
     label_list = 'Subreddit names vs labels in .csv files: \n \n'
 
     print('Obtained posts from:\n')
-
-<<<<<<< HEAD
-    n_train = 500  # Number of top posts to load from each subreddit for training
-    n_valid = 80
-    n_test = 120
-=======
-    n_train = 4000  # Number of top posts to load from each subreddit for training
-    n_valid = 300
-    n_test = 500
->>>>>>> master
 
     '''
     Good for Overfitting:
@@ -49,15 +41,8 @@ if __name__ == '__main__':  # Do not recollect data on import
     n_test = 100
     '''
 
-    n = [n_train, n_valid, n_test]
-    sample_types = ['train', 'valid', 'test']
-
     for label, subreddit in enumerate(subreddits):  # Create a .csv file for each subreddit
-<<<<<<< HEAD
-        print(top_to_csv(subreddit, sum(n) + 50, label, reddit, api))  # Take 50 extra posts in case some are not text-based
-=======
-        print(top_to_csv(subreddit, sum(n) + 100, label, reddit, api))  # Take 100 extra posts in case some are not text-based
->>>>>>> master
+        print(top_to_csv(subreddit, n, label, reddit, api))
         label_list += 'r/' + subreddit + ': ' + str(label) + '\n'
 
         #  Store the label/subreddit correspondence in a text file.
