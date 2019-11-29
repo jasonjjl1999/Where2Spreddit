@@ -14,7 +14,7 @@ class Baseline(nn.Module):
         )
         self.fc2 = nn.Sequential(
             nn.Linear(64, 32),
-            nn.RelU()
+            nn.ReLU()
         )
         self.fc3 = nn.Sequential(
             nn.Linear(32, num_classes),
@@ -62,19 +62,6 @@ class CNN(nn.Module):
         x = x.view(-1, 2 * self.n_filters)  # For input batches of size 1, squeeze may get rid of too many dimensions
 
         return (self.linear(x)).squeeze()
-
-    def forward(self, x, lengths=None):
-        x = self.embedding(x)
-        x = (x.permute(1, 0, 2)).unsqueeze(1)
-        x1 = self.conv1(x)
-        x1, _ = torch.max(x1, 2)
-        x2 = self.conv2(x)
-        x2, _ = torch.max(x2, 2)
-        x = torch.cat([x1, x2], 1).squeeze()
-        x = x.view(-1, 2 * self.n_filters)  # For input batches of size 1, squeeze may get rid of too many dimensions
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        return (self.fc3(x)).squeeze()
 
 
 class GRU(nn.Module):
@@ -176,4 +163,17 @@ class CNN_alternate(nn.Module):
             nn.Linear(32, num_classes),
             nn.Softmax(dim=1)
         )
+        
+    def forward(self, x, lengths=None):
+        x = self.embedding(x)
+        x = (x.permute(1, 0, 2)).unsqueeze(1)
+        x1 = self.conv1(x)
+        x1, _ = torch.max(x1, 2)
+        x2 = self.conv2(x)
+        x2, _ = torch.max(x2, 2)
+        x = torch.cat([x1, x2], 1).squeeze()
+        x = x.view(-1, 2 * self.n_filters)  # For input batches of size 1, squeeze may get rid of too many dimensions
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        return (self.fc3(x)).squeeze()
 '''
