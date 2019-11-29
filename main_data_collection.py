@@ -8,7 +8,7 @@ reddit = praw.Reddit(client_id='0bfjHES78X7Fyg',
 subreddits = [
     'jokes', 'askreddit', 'legaladvice', 'AmItheAsshole', 'tifu', 'todayilearned', 'technology',
     'relationship_advice', 'LifeProTips', 'askscience', 'personalfinance', 'movies', 'science',
-    'worldnews', 'sports', 'history'
+    'worldnews', 'history', 'AskWomen'
 ]  # List of classes that we will be identifying
 
 if __name__ == '__main__':  # Do not recollect data on import
