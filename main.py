@@ -62,6 +62,7 @@ def eval_acc(model, data, loss_fcn, model_type, type_of_eval):
         # Add up totals
         cum_total += label.size(0)
         cum_corr += int((many_cold(output).squeeze().float() == label).sum())
+        print((many_cold(output).squeeze().float() == label).sum())
         cum_loss += loss_fcn(output, label.long().to(device))
     return float(cum_loss), float(cum_corr / cum_total)
 
@@ -89,7 +90,7 @@ def main(args):
         skip_header=True, fields=[('text', text), ('label', labels)])
 
     train_iter, val_iter, test_iter = data.BucketIterator.splits(
-        (train_data, val_data, test_data), batch_sizes=(args.batch_size, args.batch_size, len(test_data)),
+        (train_data, val_data, test_data), batch_sizes=(args.batch_size, args.batch_size, args.batch_size),
         sort_key=lambda x: len(x.text), device=None, sort_within_batch=True, repeat=False)
 
     text.build_vocab(train_data, val_data, test_data)
@@ -280,7 +281,7 @@ if __name__ == '__main__':
     parser.add_argument('--emb-dim', type=int, default=100)
     parser.add_argument('--rnn-hidden-dim', type=int, default=100)
     parser.add_argument('--num-filt', type=int, default=40)
-    parser.add_argument('--num-class', type=int, default=16)
+    parser.add_argument('--num-class', type=int, default=18)
     parser.add_argument('--save', type=bool, default=True)
 
     args = parser.parse_args()

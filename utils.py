@@ -43,6 +43,7 @@ def top_to_csv(subreddit_name, n, label, reddit, api):
     filename = subreddit_name + '_top_' + str(n) + '.csv'  # Output .csv filename
     directory = './dataset/'
 
+    dataframe = shuffle(dataframe)
     if os.path.exists(directory) == False:  # Create 'dataset' directory if it does not already exist
         os.mkdir(directory)
     dataframe.to_csv(path_or_buf=directory + '/' + filename, index=False)
