@@ -336,6 +336,6 @@ GRU:
     n_train = 1500
     n_valid = 200
     n_test = 300
---model gru --lr 0.001 --epochs 150 --rnn-hidden-dim 100 --batch-size 1024
+--model gru --lr 0.001 --epochs 150 --rnn-hidden-dim 100
 
 '''

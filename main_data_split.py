@@ -4,7 +4,7 @@ from utils import *
 
 if __name__ == '__main__':
 
-    n_train = 1500
+    n_train = 1000
     n_valid = 200
     n_test = 300
 
