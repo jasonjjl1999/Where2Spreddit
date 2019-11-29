@@ -236,13 +236,17 @@ def main(args):
 
     outputs = many_cold(output)
     batch_label = many_cold(batch_label)
-    print("Below is Confusion Matrix for Test Set")
-    plot_confusion_matrix(batch_label, outputs, classes=subreddits)
-    plt.show()
 
     # Saving model
     if args.save:
         torch.save(net, 'model_' + model_type + '.pt')
+
+    # Confusion Matrix
+    print("Below is Confusion Matrix for Test Set")
+    plot_confusion_matrix(batch_label, outputs, classes=subreddits)
+    plt.show()
+
+
 
     # Plot Losses and Accuracy
     plt.figure()
