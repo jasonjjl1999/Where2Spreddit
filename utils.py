@@ -1,4 +1,6 @@
 import praw
+from psaw import PushshiftAPI
+
 import pandas as pd
 
 from filter import filter
@@ -11,7 +13,7 @@ from sklearn.utils import shuffle
 import numpy as np
 
 
-def top_to_csv(subreddit_name, n, label, reddit):
+def top_to_csv(subreddit_name, n, label, reddit, api):
     # Scrapes the top 'n' posts of 'subreddit' and stores the post title, text body, and number of upvotes
     # into a .csv file in the directory './dataset/'
     # The label is an input int that will be used to label posts from this subreddit
@@ -20,7 +22,7 @@ def top_to_csv(subreddit_name, n, label, reddit):
 
     subreddit = reddit.subreddit(subreddit_name)
 
-    top = subreddit.top(limit=n)
+    top = api.search_submissions(limit=n, sort='desc', sort_type='score', subreddit=subreddit)
     dataset = []
     for submission in top:  # Iterate through each submission to add to a list
         dataset.append(
