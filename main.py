@@ -11,6 +11,8 @@ import torch.optim as optim
 import torchtext
 from torchtext import data
 
+from redditscore.tokenizer import CrazyTokenizer
+
 from models import *
 from confusion import plot_confusion_matrix
 from main_data_collection import subreddits  # Import this list to get the actual (subreddit) names of labels
