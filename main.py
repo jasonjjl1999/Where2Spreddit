@@ -80,7 +80,15 @@ def main(args):
     print('The count for each label in the testing set is:')
     print(test_data_count['label'].value_counts())
 
-    text = data.Field(sequential=True, lower=True, tokenize='spacy', include_lengths=True)
+    if args.tokenizer == 'crazy':
+        print('The tokenizer is CrazyTokenizer')
+        tokenizer = CrazyTokenizer().tokenize
+    else:
+        print('The tokenizer is spacy')
+        tokenizer = 'spacy'
+
+
+    text = data.Field(sequential=True, lower=True, tokenize=tokenizer, include_lengths=True)
     labels = data.Field(sequential=False, use_vocab=False)
 
     train_data, val_data, test_data = data.TabularDataset.splits(
