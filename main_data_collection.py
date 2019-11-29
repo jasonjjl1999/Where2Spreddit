@@ -1,9 +1,14 @@
 from utils import *
 from sklearn.utils import shuffle
 
+from psaw import PushshiftAPI
+import praw
+
 reddit = praw.Reddit(client_id='0bfjHES78X7Fyg',
                      client_secret='yyM87GD70mIP3qRToGuX1F59Sd4',
                      user_agent='SubredditPredictor')
+
+api = PushshiftAPI(reddit)
 
 subreddits = [
     'jokes', 'askreddit', 'legaladvice', 'AmItheAsshole', 'tifu', 'todayilearned', 'technology',
@@ -17,19 +22,19 @@ if __name__ == '__main__':  # Do not recollect data on import
 
     print('Obtained posts from:\n')
 
-    n_train = 50  # Number of top posts to load from each subreddit for training
-    n_valid = 10
-    n_test = 10
+    n_train = 1100  # Number of top posts to load from each subreddit for training
+    n_valid = 100
+    n_test = 100
 
     '''
     Good for Overfitting:
-    
+
     n_train = 300
     n_valid = 50
     n_test = 100
-    
+
     Good for training: 
-    
+
     n_train = 600 
     n_valid = 100
     n_test = 100
@@ -39,7 +44,7 @@ if __name__ == '__main__':  # Do not recollect data on import
     sample_types = ['train', 'valid', 'test']
 
     for label, subreddit in enumerate(subreddits):  # Create a .csv file for each subreddit
-        print(top_to_csv(subreddit, sum(n) + 50, label, reddit))  # Take 50 extra posts in case some are not text-based
+        print(top_to_csv(subreddit, sum(n) + 50, label, reddit, api))  # Take 50 extra posts in case some are not text-based
         label_list += 'r/' + subreddit + ': ' + str(label) + '\n'
 
         #  Store the label/subreddit correspondence in a text file.
