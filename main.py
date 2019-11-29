@@ -65,13 +65,10 @@ def eval_acc(model, data, loss_fcn, model_type, type_of_eval):
         cum_total += label.size(0)
         cum_corr += int((many_cold(output).squeeze().float() == label).sum())
         cum_loss += loss_fcn(output, label.long().to(device))
-    print(type_of_eval, cum_total)
     return float(cum_loss), float(cum_corr / cum_total)
 
 
 def main(args):
-    print(args.save)
-    print(not args.save)
     train_data_count = pd.read_csv('dataset/training/train.csv')
     val_data_count = pd.read_csv('dataset/training/valid.csv')
     test_data_count = pd.read_csv('dataset/training/test.csv')
@@ -100,7 +97,7 @@ def main(args):
         skip_header=True, fields=[('text', text), ('label', labels)])
 
     train_iter, val_iter, test_iter = data.BucketIterator.splits(
-        (train_data, val_data, test_data), batch_sizes=(args.batch_size, args.batch_size, len(test_data)),
+        (train_data, val_data, test_data), batch_sizes=(args.batch_size, args.batch_size, args.batch_size),
         sort_key=lambda x: len(x.text), device=None, sort_within_batch=True, repeat=False)
 
     text.build_vocab(train_data, val_data, test_data)
