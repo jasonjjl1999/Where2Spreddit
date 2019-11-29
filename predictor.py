@@ -1,7 +1,6 @@
 import torchtext
 from torchtext import data
 import spacy
-import numpy as np
 
 from main_data_collection import subreddits  # Import this list to get the actual (subreddit) names of labels
 from models import *
