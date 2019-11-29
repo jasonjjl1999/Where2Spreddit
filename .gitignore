@@ -135,3 +135,6 @@ debug.py
 .vector_cache/glove.6B.200d.txt
 .vector_cache/glove.6B.300d.txt
 .vector_cache/glove.6B.50d.txt
+
+# Old Trained Models
+trained_models/old/
