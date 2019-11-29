@@ -11,9 +11,9 @@ reddit = praw.Reddit(client_id='0bfjHES78X7Fyg',
 api = PushshiftAPI(reddit)
 
 subreddits = [
-    'jokes', 'askreddit', 'legaladvice', 'AmItheAsshole', 'tifu', 'todayilearned', 'technology',
+    'jokes', 'askreddit', 'legaladvice', 'tifu', 'todayilearned', 'technology',
     'relationship_advice', 'LifeProTips', 'askscience', 'personalfinance', 'movies', 'science',
-    'worldnews', 'history', 'AskWomen', 'space', 'sports'
+    'worldnews', 'history', 'space', 'sports'
 ]  # List of classes that we will be identifying
 
 if __name__ == '__main__':  # Do not recollect data on import
@@ -22,9 +22,9 @@ if __name__ == '__main__':  # Do not recollect data on import
 
     print('Obtained posts from:\n')
 
-    n_train = 100  # Number of top posts to load from each subreddit for training
-    n_valid = 80
-    n_test = 50
+    n_train = 300  # Number of top posts to load from each subreddit for training
+    n_valid = 50
+    n_test = 80
 
     '''
     Good for Overfitting:
