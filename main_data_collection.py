@@ -22,9 +22,9 @@ if __name__ == '__main__':  # Do not recollect data on import
 
     print('Obtained posts from:\n')
 
-    n_train = 300  # Number of top posts to load from each subreddit for training
-    n_valid = 50
-    n_test = 80
+    n_train = 500  # Number of top posts to load from each subreddit for training
+    n_valid = 80
+    n_test = 120
 
     '''
     Good for Overfitting:
