@@ -29,6 +29,10 @@ def filter(post):
     # Remove accents
     post = post.replace('é', 'e')
 
+    # Change Signs
+    post = post.replace('€', 'dollars')
+    post = post.replace('$', 'dollars')
+
     # Lowercase
     post = post.lower()
 
