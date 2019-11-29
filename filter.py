@@ -1,5 +1,4 @@
 def filter(post):
-
     # Replace all 'curly' apostrophes and quotes
     post = post.replace('“', '"')
     post = post.replace('”', '"')
@@ -22,7 +21,6 @@ def filter(post):
     # todayilearned prefix
     post = post.replace('TIL: ', '')
     post = post.replace('TIL ', '')
-
 
     # Square brackets for tags
     post = post.replace('[', '')

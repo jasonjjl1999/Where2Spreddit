@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
 from sklearn.utils.multiclass import unique_labels
 
+
 def plot_confusion_matrix(y_true, y_pred, classes,
                           normalize=False,
                           title=None,
@@ -55,4 +56,3 @@ def plot_confusion_matrix(y_true, y_pred, classes,
                     color="white" if cm[i, j] > thresh else "black")
     fig.tight_layout()
     return ax
-

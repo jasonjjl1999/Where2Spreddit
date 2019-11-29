@@ -1,16 +1,17 @@
-import torch
-import torch.optim as optim
-import matplotlib.pyplot as plt
-import torchtext
-from sklearn.metrics import confusion_matrix
-from torchtext import data
-import spacy
-import argparse
-import os
-from models import *
-import numpy as np
 import random
+
+import argparse
+
+import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
+
+import torch.optim as optim
+import torchtext
+from torchtext import data
+
+from models import *
 from confusion import plot_confusion_matrix
 from main_data_collection import subreddits  # Import this list to get the actual (subreddit) names of labels
 
@@ -218,8 +219,6 @@ def main(args):
     print("Below is Confusion Matrix for Validation Set")
     print(confusion_matrix(batch_label, outputs))
 
-
-
     for (i, batch) in enumerate(test_iter, 1):
         # Setting network to eval mode
         net.eval()
@@ -240,7 +239,6 @@ def main(args):
     print("Below is Confusion Matrix for Test Set")
     plot_confusion_matrix(batch_label, outputs, classes=subreddits)
     plt.show()
-
 
     # Saving model
     if args.save:
