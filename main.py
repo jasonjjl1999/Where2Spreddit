@@ -54,7 +54,7 @@ def eval_acc(model, data, loss_fcn, model_type, type_of_eval):
         ind_batch = ind_batch.to(device)
         label = batch.label.float()
 
-        if model_type == 'rnn' or model_type == 'gru':
+        if model_type == 'rnn' or model_type == 'gru' or model_type == 'lstm':
             output = model(ind_batch, batch_length)
         else:
             output = model(ind_batch)
@@ -99,7 +99,6 @@ def main(args):
 
     print("Shape of Vocab:", text.vocab.vectors.shape)
 
-    batch_size = args.batch_size
     lr = args.lr
     num_classes = args.num_class
     epochs = args.epochs
@@ -107,14 +106,15 @@ def main(args):
     emb_dim = args.emb_dim
     rnn_hidden_dim = args.rnn_hidden_dim
     num_filt = args.num_filt
-    seed = 10
+
     if model_type == 'cnn':
         net = CNN(emb_dim, vocab, num_filt, [3, 4], num_classes)
-
     elif model_type == 'rnn':
         net = RNN(emb_dim, vocab, rnn_hidden_dim, num_classes)
     elif model_type == 'gru':
         net = GRU(emb_dim, vocab, rnn_hidden_dim, num_classes)
+    elif model_type == 'lstm':
+        net = LSTM(emb_dim, vocab, rnn_hidden_dim, num_classes)
     else:
         net = Baseline(emb_dim, vocab, num_classes)
 
@@ -143,7 +143,7 @@ def main(args):
             batch_label = nn.functional.one_hot(batch.label).float()
 
             # Forward step to get prediction
-            if model_type == 'rnn' or model_type == 'gru':
+            if model_type == 'rnn' or model_type == 'gru' or model_type == 'lstm':
                 output = net(batch_input, batch_length)
             else:
                 output = net(batch_input)
@@ -209,7 +209,7 @@ def main(args):
         batch_label = nn.functional.one_hot(batch.label).float()
 
         # Forward step to get prediction
-        if model_type == 'rnn' or model_type == 'gru':
+        if model_type == 'rnn' or model_type == 'gru' or model_type == 'lstm':
             output = net(batch_input, batch_length)
         else:
             output = net(batch_input)
@@ -229,7 +229,7 @@ def main(args):
         batch_label = nn.functional.one_hot(batch.label).float()
 
         # Forward step to get prediction
-        if model_type == 'rnn' or model_type == 'gru':
+        if model_type == 'rnn' or model_type == 'gru' or model_type == 'lstm':
             output = net(batch_input, batch_length)
         else:
             output = net(batch_input)
@@ -271,8 +271,8 @@ if __name__ == '__main__':
     parser.add_argument('--batch-size', type=int, default=64)
     parser.add_argument('--lr', type=float, default=0.0001)
     parser.add_argument('--epochs', type=int, default=25)
-    parser.add_argument('--model', type=str, choices=['baseline', 'rnn', 'cnn', 'gru'], default='baseline',
-                        help="Model type: baseline, rnn, cnn, gru (Default: baseline)")
+    parser.add_argument('--model', type=str, choices=['baseline', 'rnn', 'cnn', 'gru', 'lstm'], default='baseline',
+                        help="Model type: baseline, rnn, cnn, gru, lstm, (Default: baseline)")
     parser.add_argument('--emb-dim', type=int, default=100)
     parser.add_argument('--rnn-hidden-dim', type=int, default=100)
     parser.add_argument('--num-filt', type=int, default=40)

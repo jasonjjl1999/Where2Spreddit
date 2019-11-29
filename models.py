@@ -63,29 +63,6 @@ class CNN(nn.Module):
 
         return (self.linear(x)).squeeze()
 
-
-class CNN_alternate(nn.Module):
-    def __init__(self, embedding_dim, vocab, n_filters, filter_sizes, num_classes):
-        super(CNN, self).__init__()
-
-        self.n_filters = n_filters
-        self.embedding = nn.Embedding(len(vocab), embedding_dim)
-        self.embedding.from_pretrained(vocab.vectors)
-        self.conv1 = nn.Sequential(
-            nn.Conv2d(1, n_filters, (filter_sizes[0], embedding_dim)),
-            nn.ReLU()
-        )
-        self.conv2 = nn.Sequential(
-            nn.Conv2d(1, n_filters, (filter_sizes[1], embedding_dim)),
-            nn.ReLU()
-        )
-        self.fc1 = nn.Linear(2 * n_filters, 64)
-        self.fc2 = nn.Linear(64, 32)
-        self.fc3 = nn.Sequential(
-            nn.Linear(32, num_classes),
-            nn.Softmax(dim=1)
-        )
-
     def forward(self, x, lengths=None):
         x = self.embedding(x)
         x = (x.permute(1, 0, 2)).unsqueeze(1)
@@ -136,6 +113,26 @@ class RNN(nn.Module):
         return (self.linear(h)).squeeze()
 
 
+class LSTM(nn.Module):
+    def __init__(self, embedding_dim, vocab, hidden_dim, num_classes):
+        super(LSTM, self).__init__()
+
+        self.embedding = nn.Embedding.from_pretrained(vocab.vectors)
+        self.lstm = nn.LSTM(embedding_dim, hidden_dim)
+        self.linear = nn.Sequential(
+            nn.Linear(hidden_dim, num_classes),
+            nn.Softmax(dim=2)
+        )
+
+    def forward(self, x, lengths=None):
+        x = self.embedding(x)
+        x = nn.utils.rnn.pack_padded_sequence(x, lengths)
+        h = self.lstm(x)[1][
+            0]  # lstm cell has two outputs in the form of a tuple, so we take the first element (hidden layer)
+        return (self.linear(h)).squeeze()
+
+
+'''
 class RNNAlternate(nn.Module):
     def __init__(self, embedding_dim, vocab, hidden_dim, num_classes):
         super(RNN, self).__init__()
@@ -157,3 +154,26 @@ class RNNAlternate(nn.Module):
         h = F.relu(h)
 
         return (self.fc2(h)).squeeze()
+
+class CNN_alternate(nn.Module):
+    def __init__(self, embedding_dim, vocab, n_filters, filter_sizes, num_classes):
+        super(CNN, self).__init__()
+
+        self.n_filters = n_filters
+        self.embedding = nn.Embedding(len(vocab), embedding_dim)
+        self.embedding.from_pretrained(vocab.vectors)
+        self.conv1 = nn.Sequential(
+            nn.Conv2d(1, n_filters, (filter_sizes[0], embedding_dim)),
+            nn.ReLU()
+        )
+        self.conv2 = nn.Sequential(
+            nn.Conv2d(1, n_filters, (filter_sizes[1], embedding_dim)),
+            nn.ReLU()
+        )
+        self.fc1 = nn.Linear(2 * n_filters, 64)
+        self.fc2 = nn.Linear(64, 32)
+        self.fc3 = nn.Sequential(
+            nn.Linear(32, num_classes),
+            nn.Softmax(dim=1)
+        )
+'''
