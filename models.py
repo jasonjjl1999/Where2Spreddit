@@ -36,8 +36,7 @@ class CNN(nn.Module):
         super(CNN, self).__init__()
 
         self.n_filters = n_filters
-        self.embed = nn.Embedding(len(vocab), embedding_dim)
-        self.embed.from_pretrained(vocab.vectors)
+        self.embedding = nn.Embedding.from_pretrained(vocab.vectors)
         self.conv1 = nn.Sequential(
             nn.Conv2d(1, n_filters, (filter_sizes[0], embedding_dim)),
             nn.ReLU()
@@ -52,7 +51,7 @@ class CNN(nn.Module):
         )
 
     def forward(self, x, lengths=None):
-        x = self.embed(x)
+        x = self.embedding(x)
         x = (x.permute(1, 0, 2)).unsqueeze(1)
         x1 = self.conv1(x)
         x1 = torch.max(x1, 2)[0]

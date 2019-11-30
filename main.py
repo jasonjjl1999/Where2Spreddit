@@ -121,7 +121,7 @@ def main(args):
     num_filt = args.num_filt
 
     if model_type == 'cnn':
-        net = CNN(emb_dim, vocab, num_filt, [2, 4], num_classes)
+        net = CNN(emb_dim, vocab, num_filt, [3, 4], num_classes)
     elif model_type == 'rnn':
         net = RNN(emb_dim, vocab, rnn_hidden_dim, num_classes)
     elif model_type == 'gru':
