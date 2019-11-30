@@ -17,6 +17,9 @@ from models import *
 from confusion import plot_confusion_matrix
 from main_data_collection import subreddits  # Import this list to get the actual (subreddit) names of labels
 
+from nltk import sent_tokenize
+
+
 # Set random seeds
 seed = 1234
 torch.manual_seed(seed)
@@ -87,6 +90,9 @@ def main(args):
     if args.tokenizer == 'crazy':
         print('The tokenizer is: CrazyTokenizer \n')
         tokenizer = CrazyTokenizer().tokenize
+    if args.tokenizer == 'nltk':
+        print('The tokenizer is: NLTK \n')
+        tokenizer = sent_tokenize
     else:
         print('The tokenizer is: spacy \n')
         tokenizer = 'spacy'
@@ -310,7 +316,7 @@ if __name__ == '__main__':
     parser.add_argument('--num-filt', type=int, default=40)
     parser.add_argument('--num-class', type=int, default=16)
     parser.add_argument('--save', type=bool, default=True)
-    parser.add_argument('--tokenizer', type=str, choices=['spacy', 'crazy'], default='crazy')
+    parser.add_argument('--tokenizer', type=str, choices=['spacy', 'crazy', 'nltk'], default='crazy')
 
     args = parser.parse_args()
 

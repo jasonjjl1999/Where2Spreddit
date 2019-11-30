@@ -1,6 +1,3 @@
-import praw
-from psaw import PushshiftAPI
-
 import pandas as pd
 
 from filter import filter
