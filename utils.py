@@ -25,10 +25,12 @@ def top_to_csv(subreddit_name, n, label, reddit, api):
     top = api.search_submissions(limit=n, sort='desc', sort_type='score', subreddit=subreddit)
     dataset = []
     for submission in top:  # Iterate through each submission to add to a list
-        dataset.append(
-            (filter(submission.title), label)
-            # (filter(submission.title)+'. '+filter(submission.selftext), label)
-        )
+        filtered_text = filter(submission.title)  # Pass the title through a filter
+        if len(filtered_text.split()) >= 5:  # Only get posts above lenth 5
+            dataset.append(
+                (filtered_text, label)
+                # (filter(submission.title)+'. '+filter(submission.selftext), label)
+            )
 
     dataframe = pd.DataFrame(dataset, columns=['text', 'label'])  # Convert list to DataFrame
 
