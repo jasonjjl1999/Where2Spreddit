@@ -26,7 +26,7 @@ def top_to_csv(subreddit_name, n, label, reddit, api):
     dataset = []
     for submission in top:  # Iterate through each submission to add to a list
         filtered_text = filter(submission.title)  # Pass the title through a filter
-        if len(filtered_text.split()) >= 5:  # Only get posts above lenth 5
+        if len(filtered_text.split()) >= 5:  # Only get posts above length 5
             dataset.append(
                 (filtered_text, label)
                 # (filter(submission.title)+'. '+filter(submission.selftext), label)

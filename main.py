@@ -212,8 +212,6 @@ def main(args):
     output = torch.empty(0).to(device)
 
     for (i, batch) in enumerate(val_iter, 1):
-        # Setting network to eval mode
-        net.eval()
 
         # Getting data for current batch
         batch_input, batch_length = batch.text
@@ -234,8 +232,6 @@ def main(args):
     output = torch.empty(0).to(device)
 
     for (i, batch) in enumerate(test_iter, 1):
-        # Setting network to eval mode
-        net.eval()
 
         # Getting data for current batch
         batch_input, batch_length = batch.text
