@@ -75,18 +75,23 @@ def main(args):
 
     print('The count for each label in the training set is:')
     print(train_data_count['label'].value_counts())
+    print()
     print('The count for each label in the validation set is:')
     print(val_data_count['label'].value_counts())
+    print()
     print('The count for each label in the testing set is:')
     print(test_data_count['label'].value_counts())
+    print()
 
 
     if args.tokenizer == 'crazy':
-        print('The tokenizer is CrazyTokenizer')
+        print('The tokenizer is: CrazyTokenizer \n')
         tokenizer = CrazyTokenizer().tokenize
     else:
-        print('The tokenizer is spacy')
+        print('The tokenizer is: spacy \n')
         tokenizer = 'spacy'
+
+    print('The model used is:', args.model, '\n')
 
     text = data.Field(sequential=True, lower=True, tokenize=tokenizer, include_lengths=True)
     labels = data.Field(sequential=False, use_vocab=False)
@@ -105,7 +110,7 @@ def main(args):
     text.vocab.load_vectors(torchtext.vocab.GloVe(name='6B', dim=100))
     vocab = text.vocab
 
-    print("Shape of Vocab:", text.vocab.vectors.shape)
+    print('Shape of Vocab:', text.vocab.vectors.shape, '\n')
 
     lr = args.lr
     num_classes = args.num_class
@@ -136,6 +141,8 @@ def main(args):
     # Plotting data
     plot_epoch = [i for i in range(1, args.epochs + 1)]
     plot_train_loss, plot_train_acc, plot_valid_loss, plot_valid_acc = [], [], [], []
+
+    print('---------- TRAINING LOOP ---------- \n')
 
     # Begin Training Loop
     for epoch in range(epochs):
@@ -179,6 +186,9 @@ def main(args):
                                                                                            train_acc, valid_acc))
     # Final Test Accuracy
     test_loss, test_acc = eval_acc(net, test_iter, loss_fcn, model_type, 'test')
+    print()
+    print('---------- FINAL RESULTS ----------')
+    print()
     print('Final Test Loss: ' + str(test_loss / (epoch + 1)) + ', Final Test Acc: ' + str(test_acc))
 
     '''
@@ -225,6 +235,14 @@ def main(args):
             output = torch.cat((output, net(batch_input)))
 
     outputs = many_cold(output)
+
+    # Print number of trainable parameters in the model
+    print()
+    print('The number of trainable parameters in the model is:')
+    print(sum(p.numel() for p in net.parameters() if p.requires_grad))
+    # https://discuss.pytorch.org/t/how-do-i-check-the-number-of-parameters-of-a-model/4325/7
+
+    print()
     print("Below is Confusion Matrix for Validation Set")
     print(confusion_matrix(batch_label.cpu(), outputs.cpu()))
 
@@ -246,12 +264,12 @@ def main(args):
 
     outputs = many_cold(output)
 
-
     # Saving model
     if args.save:
         torch.save(net, 'model_' + model_type + '.pt')
 
     # Confusion Matrix
+    print()
     print("Below is Confusion Matrix for Test Set")
     plot_confusion_matrix(batch_label.cpu(), outputs.cpu(), classes=subreddits)
     plt.show()
@@ -292,7 +310,7 @@ if __name__ == '__main__':
     parser.add_argument('--num-filt', type=int, default=40)
     parser.add_argument('--num-class', type=int, default=16)
     parser.add_argument('--save', type=bool, default=True)
-    parser.add_argument('--tokenizer', type=str, choices=['spacy', 'crazy'], default='spacy')
+    parser.add_argument('--tokenizer', type=str, choices=['spacy', 'crazy'], default='crazy')
 
     args = parser.parse_args()
 

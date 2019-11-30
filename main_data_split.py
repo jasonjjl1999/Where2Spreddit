@@ -5,7 +5,7 @@ from utils import *
 if __name__ == '__main__':
 
     n_train = 1000
-    n_valid = 200
+    n_valid = 100
     n_test = 200
 
     n = [n_train, n_valid, n_test]
