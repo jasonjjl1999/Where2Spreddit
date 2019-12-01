@@ -1,6 +1,5 @@
 from utils import *
 
-
 from psaw import PushshiftAPI
 import praw
 
@@ -18,7 +17,7 @@ subreddits = [
 
 if __name__ == '__main__':  # Do not recollect data on import
 
-    n = 3000
+    n = 10000
 
     label_list = 'Subreddit names vs labels in .csv files: \n \n'
 

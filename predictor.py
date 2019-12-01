@@ -5,6 +5,8 @@ import spacy
 from main_data_collection import subreddits  # Import this list to get the actual (subreddit) names of labels
 from models import *
 
+from filter import *
+
 # Set default device (for GPU usage)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  # torchsummary
 
@@ -35,7 +37,8 @@ def tokenizer(inp):
 
 while True:
     inp = input("Enter a sentence: ")
-    inp = inp.lower()
+    # Why do airplanes need to fly so high
+    inp = filter(inp)
 
     tokens = tokenizer(inp)
     token_ints = [vocab.stoi[tok] for tok in tokens]

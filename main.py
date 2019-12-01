@@ -19,7 +19,6 @@ from main_data_collection import subreddits  # Import this list to get the actua
 
 from nltk import sent_tokenize
 
-
 # Set random seeds
 seed = 1234
 torch.manual_seed(seed)
@@ -85,7 +84,6 @@ def main(args):
     print('The count for each label in the testing set is:')
     print(test_data_count['label'].value_counts())
     print()
-
 
     if args.tokenizer == 'crazy':
         print('The tokenizer is: CrazyTokenizer \n')
@@ -279,8 +277,6 @@ def main(args):
     print("Below is Confusion Matrix for Test Set")
     plot_confusion_matrix(batch_label.cpu(), outputs.cpu(), classes=subreddits)
     plt.show()
-
-
 
     # Plot Losses and Accuracy
     plt.figure()
