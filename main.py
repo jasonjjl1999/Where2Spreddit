@@ -17,6 +17,9 @@ from models import *
 from confusion import plot_confusion_matrix
 from main_data_collection import subreddits  # Import this list to get the actual (subreddit) names of labels
 
+from nltk import sent_tokenize
+
+
 # Set random seeds
 seed = 1234
 torch.manual_seed(seed)
@@ -87,13 +90,16 @@ def main(args):
     if args.tokenizer == 'crazy':
         print('The tokenizer is: CrazyTokenizer \n')
         tokenizer = CrazyTokenizer().tokenize
+    if args.tokenizer == 'nltk':
+        print('The tokenizer is: NLTK \n')
+        tokenizer = sent_tokenize
     else:
         print('The tokenizer is: spacy \n')
         tokenizer = 'spacy'
 
     print('The model used is:', args.model, '\n')
 
-    text = data.Field(sequential=True, lower=True, tokenize=tokenizer, include_lengths=True)
+    text = data.Field(sequential=True, lower=True, include_lengths=True)
     labels = data.Field(sequential=False, use_vocab=False)
 
     train_data, val_data, test_data = data.TabularDataset.splits(
@@ -310,7 +316,7 @@ if __name__ == '__main__':
     parser.add_argument('--num-filt', type=int, default=40)
     parser.add_argument('--num-class', type=int, default=16)
     parser.add_argument('--save', type=bool, default=True)
-    parser.add_argument('--tokenizer', type=str, choices=['spacy', 'crazy'], default='crazy')
+    parser.add_argument('--tokenizer', type=str, choices=['spacy', 'crazy', 'nltk'], default='nltk')
 
     args = parser.parse_args()
 
