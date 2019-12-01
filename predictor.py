@@ -6,6 +6,8 @@ from main_data_collection import subreddits  # Import this list to get the actua
 from models import *
 from filter import *
 
+from filter import *
+
 # Set default device (for GPU usage)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  # torchsummary
 
@@ -36,6 +38,7 @@ def tokenizer(inp):
 
 while True:
     inp = input("Enter a sentence: ")
+    # Why do airplanes need to fly so high
     inp = filter(inp)
 
     tokens = tokenizer(inp)
