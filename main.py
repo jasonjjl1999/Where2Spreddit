@@ -99,7 +99,7 @@ def main(args):
 
     print('The model used is:', args.model, '\n')
 
-    text = data.Field(sequential=True, lower=True, tokenize=tokenizer, include_lengths=True)
+    text = data.Field(sequential=True, lower=True, include_lengths=True)
     labels = data.Field(sequential=False, use_vocab=False)
 
     train_data, val_data, test_data = data.TabularDataset.splits(
