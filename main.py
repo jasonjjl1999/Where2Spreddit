@@ -188,14 +188,20 @@ def main(args):
                                                                                            cum_loss / (epoch + 1),
                                                                                            valid_loss / (epoch + 1),
                                                                                            train_acc, valid_acc))
-    # Final Test Accuracy
+    # Final Results
     test_loss, test_acc = eval_acc(net, test_iter, loss_fcn, model_type, 'test')
+    val_loss, val_acc = eval_acc(net, val_iter, loss_fcn, model_type, 'valid')
+    train_loss, train_acc = eval_acc(net, train_iter, loss_fcn, model_type, 'train')
+
     print()
     print('---------- FINAL RESULTS ----------')
     print()
+    print('Final Training Loss: ' + str(train_loss / (epoch + 1)) + ', Final Training Acc: ' + str(train_acc))
+    print('Final Validation Loss: ' + str(val_loss / (epoch + 1)) + ', Final Validation Acc: ' + str(val_acc))
     print('Final Test Loss: ' + str(test_loss / (epoch + 1)) + ', Final Test Acc: ' + str(test_acc))
 
     '''
+
     train_iter, val_iter, test_iter = data.BucketIterator.splits(
         (train_data, val_data, test_data), batch_sizes=(len(train_data), len(val_data), len(test_data)),
         sort_key=lambda x: len(x.text), device=None, sort_within_batch=True, repeat=False)
@@ -276,6 +282,7 @@ def main(args):
     print()
     print("Below is Confusion Matrix for Test Set")
     plot_confusion_matrix(batch_label.cpu(), outputs.cpu(), classes=subreddits)
+    plt.savefig('model_' + model_type + '_confusion.png')
     plt.show()
 
     # Plot Losses and Accuracy
@@ -286,6 +293,7 @@ def main(args):
     plt.ylabel("Loss")
     plt.xlabel("Epoch")
     plt.legend()
+    plt.savefig('model_' + model_type + '_loss.png')
     plt.show()
 
     # Plot accuracy
@@ -297,6 +305,7 @@ def main(args):
     plt.ylabel("Accuracy")
     plt.xlabel("Epoch")
     plt.legend()
+    plt.savefig('model_' + model_type + '_accuracy.png')
     plt.show()
 
 
