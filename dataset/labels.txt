@@ -2,3 +2,17 @@ Subreddit names vs labels in .csv files:
  
 r/jokes: 0
 r/askreddit: 1
+r/legaladvice: 2
+r/tifu: 3
+r/todayilearned: 4
+r/technology: 5
+r/relationship_advice: 6
+r/LifeProTips: 7
+r/askscience: 8
+r/personalfinance: 9
+r/movies: 10
+r/science: 11
+r/worldnews: 12
+r/history: 13
+r/space: 14
+r/sports: 15

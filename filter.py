@@ -3,6 +3,8 @@ from nltk.stem import WordNetLemmatizer
 
 def filter(post):
 
+
+
     # Lowercase
     post = post.lower()
 
