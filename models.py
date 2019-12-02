@@ -46,7 +46,7 @@ class CNN(nn.Module):
             nn.ReLU()
         )
         self.linear = nn.Sequential(
-            nn.Linear(2 * n_filters, num_classes),
+            nn.Linear(2 * self.n_filters, num_classes),
             nn.Softmax(dim=1)
         )
 
