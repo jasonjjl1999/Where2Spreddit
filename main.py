@@ -330,7 +330,7 @@ if __name__ == '__main__':
 '''
 BASELINE:
 
---model baseline --lr 0.01 --epochs 100
+--model baseline --lr 0.001 --epochs 100
 
 CNN:
 
