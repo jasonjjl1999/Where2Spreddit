@@ -54,6 +54,7 @@ while True:
     outputs[4] = lstm_net(token_tensor, lengths).cpu().detach().numpy()
 
     models = ['baseline', 'cnn', 'rnn', 'gru', 'lstm']
+    model_names = ['Baseline', 'CNN', 'RNN', 'GRU', 'LSTM']
 
     for i in range(len(outputs)):
         outputs[i] = [100 * prediction for prediction in outputs[i]]  # Multiply every value by 100 to get a percentage
@@ -68,9 +69,10 @@ while True:
 
     print()
     for i in range(len(outputs)):
-        print(models[i] + ' prediction:')
+        print('----- ' + model_names[i] + ' -----\n')
         for top in range(3):
-            print(subreddits[outputs[i][top][1]] + ' with probability ' + str(round(outputs[i][top][0], 3)) + '%')
+            print('     ' + subreddits[outputs[i][top][1]] + ':    ' + str(
+                round(outputs[i][top][0], 3)) + '%')
         print()
 
     print()
