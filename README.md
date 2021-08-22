@@ -51,6 +51,43 @@ For inference, run `python predictor.py` in the virtual environment.
 The predictor script reads directly from user input to classify and recommend a appropriate subreddit.
 Due to the Convolution layer dimensions for the CNN, the input sentence must include at least 4 words.
 
+Example:
+
+```
+Enter a sentence: How much mass does a black hole have?                       
+
+----- Baseline -----
+
+     askscience:    100.0%
+     askreddit:    0.0%
+     history:    0.0%
+
+----- CNN -----
+
+     askscience:    91.22%
+     jokes:    8.055%
+     askreddit:    0.725%
+
+----- RNN -----
+
+     askscience:    99.874%
+     science:    0.126%
+     history:    0.0%
+
+----- GRU -----
+
+     askscience:    100.0%
+     askreddit:    0.0%
+     science:    0.0%
+
+----- LSTM -----
+
+     askscience:    93.295%
+     jokes:    6.203%
+     history:    0.249%
+
+```
+
 ### Training
 For training, run `python main.py` in the virtual environment.
 The main script accepts the following options:
