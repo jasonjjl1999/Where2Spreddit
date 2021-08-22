@@ -9,9 +9,6 @@ cycler==0.10.0
 cymem==2.0.5
 dill==0.3.4
 dnspython==1.16.0
-en-core-web-lg==3.1.0
-en-core-web-md==3.1.0
-en-core-web-sm==3.1.0
 eventlet==0.31.1
 filelock==3.0.12
 greenlet==1.1.1
