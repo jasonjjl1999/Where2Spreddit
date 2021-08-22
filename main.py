@@ -9,7 +9,7 @@ from sklearn.metrics import confusion_matrix
 
 import torch.optim as optim
 import torchtext
-from torchtext import data
+from torchtext import legacy
 
 from redditscore.tokenizer import CrazyTokenizer
 
@@ -97,15 +97,15 @@ def main(args):
 
     print('The model used is:', args.model, '\n')
 
-    text = data.Field(sequential=True, lower=True, include_lengths=True)
-    labels = data.Field(sequential=False, use_vocab=False)
+    text = legacy.data.Field(sequential=True, lower=True, include_lengths=True)
+    labels = legacy.data.Field(sequential=False, use_vocab=False)
 
-    train_data, val_data, test_data = data.TabularDataset.splits(
+    train_data, val_data, test_data = legacy.data.TabularDataset.splits(
         path='./dataset', train='./training/train.csv',
         validation='./training/valid.csv', test='./training/test.csv', format='csv',
         skip_header=True, fields=[('text', text), ('label', labels)])
 
-    train_iter, val_iter, test_iter = data.BucketIterator.splits(
+    train_iter, val_iter, test_iter = legacy.data.BucketIterator.splits(
         (train_data, val_data, test_data), batch_sizes=(args.batch_size, args.batch_size, args.batch_size),
         sort_key=lambda x: len(x.text), device=None, sort_within_batch=True, repeat=False)
 
@@ -202,7 +202,7 @@ def main(args):
 
     '''
 
-    train_iter, val_iter, test_iter = data.BucketIterator.splits(
+    train_iter, val_iter, test_iter = legacy.data.BucketIterator.splits(
         (train_data, val_data, test_data), batch_sizes=(len(train_data), len(val_data), len(test_data)),
         sort_key=lambda x: len(x.text), device=None, sort_within_batch=True, repeat=False)
 
@@ -349,9 +349,6 @@ GRU:
 LSTM: 
 
 --model lstm --lr 0.0001 --epochs 100 --rnn-hidden-dim 100 
-
-
-                 [ DON'T FORGET TO CHANGE --num-class PARAMETER ]
                  
                  
 FOR LARGER DATASETS

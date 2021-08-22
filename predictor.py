@@ -1,20 +1,24 @@
 import torchtext
-from torchtext import data
+from torchtext import legacy
 import spacy
 
 from main_data_collection import subreddits  # Import this list to get the actual (subreddit) names of labels
 from models import *
 from filter import *
 
-from filter import *
+import nltk
+
+# Download nltk dependencies
+nltk.download('punkt')
+nltk.download('wordnet')
 
 # Set default device (for GPU usage)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  # torchsummary
 
-text = data.Field(sequential=True, lower=True, tokenize='spacy', include_lengths=True)
-labels = data.Field(sequential=False, use_vocab=False)
+text = legacy.data.Field(sequential=True, lower=True, tokenize='spacy', include_lengths=True)
+labels = legacy.data.Field(sequential=False, use_vocab=False)
 
-train_data, val_data, test_data = data.TabularDataset.splits(
+train_data, val_data, test_data = legacy.data.TabularDataset.splits(
     path='./dataset', train='./training/train.csv',
     validation='./training/valid.csv', test='./training/test.csv', format='csv',
     skip_header=True, fields=[('text', text), ('label', labels)])
@@ -32,7 +36,7 @@ lstm_net = torch.load('trained_models/model_lstm.pt', map_location=torch.device(
 
 
 def tokenizer(inp):
-    spacy_en = spacy.load('en')
+    spacy_en = spacy.load('en_core_web_sm')
     return [tok.text for tok in spacy_en(inp)]
 
 
