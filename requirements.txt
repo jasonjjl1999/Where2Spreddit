@@ -48,7 +48,7 @@ srsly==2.4.1
 thinc==8.0.8
 threadpoolctl==2.2.0
 tldextract==3.1.0
-torch==1.9.0
+torch==1.8.2
 torchtext==0.10.0
 torchvision==0.10.0
 tqdm==4.62.1
