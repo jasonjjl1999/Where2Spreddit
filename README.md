@@ -10,7 +10,11 @@ A collection of self-trained Neural Networks for classifying Reddit posts and Co
 
 From root directory of repo, run `pip3 install -r requirements.txt`. It is highly recommended to use a clean virtual environment to prevent conflicts with other packages.
 
-### 3. Install packages for spaCy tokenizer
+### 3. Install redditscore package
+
+Run `pip install git+https://github.com/crazyfrogspb/RedditScore.git`
+
+### 4. Install packages for spaCy tokenizer
 
 Run
 
